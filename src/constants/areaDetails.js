@@ -482,10 +482,10 @@ export const AREA_DETAILS = {
       { month: "05", temp: 15.9, do: 7.6, nutrient: 0.22 },
     ],
     media: [
-      { label: "2025.08", url: IMG },
-      { label: "2025.09", url: IMG },
-      { label: "2025.10", url: IMG },
-      { label: "2025.11", url: IMG },
+      { label: "2025.08", url: "/images/sea1.jpeg" },
+      { label: "2025.09", url: "/images/sea2.jpeg" },
+      { label: "2025.10", url: "/images/sea3.jpeg" },
+      { label: "2025.11", url: "/images/sea4.jpeg" },
     ],
   },
 
