@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { REGIONS } from "@/constants/regions";
+// import { REGIONS } from "@/constants/regions"; // ❌ 제거: 더미 데이터 상수 삭제
 import changeCameraView from "@/utils/map/changeCameraView";
 import ControlsHeader from "./controlsHeader";
 import AreaGroupsList from "./areaGroupList";
@@ -19,6 +19,7 @@ function daysAgo(area) {
 }
 
 export default function TopRightControls({
+  regionsData, // ✅ 추가: 부모로부터 데이터 수신
   currentLocation,
   setCurrentLocation,
   workingArea,
@@ -30,10 +31,11 @@ export default function TopRightControls({
   const [open, setOpen] = useState(true);
   const [query, setQuery] = useState("");
 
+  // REGIONS 상수 대신 props로 받은 regionsData 사용
   const activeRegion = useMemo(() => {
-    if (!currentLocation) return null;
-    return REGIONS.find((r) => r.id === currentLocation.id) ?? null;
-  }, [currentLocation]);
+    if (!currentLocation || !regionsData) return null;
+    return regionsData.find((r) => r.id === currentLocation.id) ?? null;
+  }, [currentLocation, regionsData]);
 
   const resetView = () => {
     if (!mapRef?.current) return;
@@ -51,7 +53,8 @@ export default function TopRightControls({
       resetView();
       return;
     }
-    const selected = REGIONS.find((r) => r.id === id) ?? null;
+    // REGIONS 상수 대신 regionsData에서 찾음
+    const selected = regionsData.find((r) => r.id === id) ?? null;
     setCurrentLocation(selected);
     setWorkingArea(null);
     if (mapRef?.current && selected) changeCameraView(mapRef.current, selected);
@@ -113,9 +116,9 @@ export default function TopRightControls({
           {/* 지역 스위처 + 검색 같은 줄 */}
           <div className="px-4 pt-2">
             <div className="flex items-center gap-3">
-              {/* 지역 스위처: 가로 스크롤 가능 */}
+              {/* 지역 스위처: regionsData 매핑 */}
               <div className="flex gap-2 overflow-x-auto pr-1 max-w-[55%]">
-                {REGIONS.map((r) => {
+                {regionsData && regionsData.map((r) => {
                   const active = currentLocation?.id === r.id;
                   return (
                     <button
@@ -128,7 +131,7 @@ export default function TopRightControls({
                       : "border-white/10 bg-white/10 hover:bg-white/15"
                   }`}
                     >
-                      {r.label}
+                      {r.label} ({r.areas ? r.areas.length : 0})
                     </button>
                   );
                 })}

@@ -1,50 +1,67 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { ClipLoader } from "react-spinners";
-import { AREA_DETAILS } from "@/constants/areaDetails";
-import { AREA_DETAILS_AI } from "@/constants/areaDetails-ai";
+import { useEffect, useMemo, useState } from "react";
+import { ClipLoader, PuffLoader } from "react-spinners";
+import { fetchAreaDetail } from "@/api/dashboard";
+import { mapAreaDetailToViewModel } from "@/utils/mappers/dashboardMapper";
 import TransplantTab from "./tabs/transplant-tab";
 import GrowthTab from "./tabs/growth-tab";
 import BiodiversityTab from "./tabs/bio-diversity-tab";
 import WaterTab from "./tabs/water-tab";
 
 export default function DetailInfo({ areaId }) {
-  const [aiOn, setAiOn] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // aiOn 여부에 따라 데이터 소스 전환
-  const data = useMemo(() => {
-    const src = aiOn ? AREA_DETAILS_AI : AREA_DETAILS;
-    return src[areaId] ?? null;
-  }, [aiOn, areaId]);
+  const [aiOn, setAiOn] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const apiResponse = await fetchAreaDetail(areaId);
+        const viewModel = mapAreaDetailToViewModel(apiResponse.data);
+        setData(viewModel);
+      } catch (err) {
+        console.error(err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (areaId) loadData();
+  }, [areaId]);
 
   const headerInfo = useMemo(() => {
     const b = data?.basic;
-    if (!b) return "데이터 없음";
+    if (!b) return "로딩 중...";
     return `복원 시작일 ${b.startDate} · ${b.habitat} · ${b.depth}m · 면적 ${b.areaSize}`;
   }, [data]);
 
-  // AI 토글 + 로딩(Mock 1초) — 나중에 실제 API로 교체
   const handleToggleAI = async () => {
-    if (loading) return;
-    setLoading(true);
-
-    // ⚠️ 임시 지연. 실제 연결 시:
-    // const res = await fetch(`/api/predict?areaId=${areaId}`);
-    // const predicted = await res.json();
-    // 상태에 반영한 뒤 setAiOn(true/false)
+    if (aiLoading) return;
+    setAiLoading(true);
     await new Promise((r) => setTimeout(r, 1000));
-
     setAiOn((v) => !v);
-    setLoading(false);
+    setAiLoading(false);
   };
 
-  if (!data) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-transparent text-white flex items-center justify-center">
+        <PuffLoader color="#36d7b7" size={60} />
+      </div>
+    );
+  }
+
+  if (error || !data) {
     return (
       <div className="min-h-screen bg-transparent text-white flex items-center justify-center">
         <div className="rounded-xl border border-white/15 bg-white/10 px-6 py-5 backdrop-blur-md">
-          <div className="text-sm">데이터가 없습니다. (ID: {areaId})</div>
+          <div className="text-sm">데이터를 불러올 수 없습니다. (ID: {areaId})</div>
           <a
             href="/"
             className="mt-4 inline-flex items-center rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm hover:bg-white/15"
@@ -72,18 +89,18 @@ export default function DetailInfo({ areaId }) {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleToggleAI}
-                disabled={loading}
-                aria-busy={loading}
+                disabled={aiLoading}
+                aria-busy={aiLoading}
                 className={[
                   "h-8 px-3 rounded-full text-xs border transition inline-flex items-center justify-center min-w-24",
                   aiOn
                     ? "border-cyan-400/60 bg-cyan-400/20"
                     : "border-white/10 bg-white/10 hover:bg-white/15",
-                  loading ? "opacity-70 cursor-not-allowed" : "",
+                  aiLoading ? "opacity-70 cursor-not-allowed" : "",
                 ].join(" ")}
                 title="AI 기반 예측값 보기"
               >
-                {loading ? (
+                {aiLoading ? (
                   <ClipLoader size={16} color="#FFFFFF" />
                 ) : aiOn ? (
                   "AI 예측 ON"

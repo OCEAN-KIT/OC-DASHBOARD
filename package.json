@@ -7,6 +7,7 @@
     "dev:https": "next dev --experimental-https --experimental-https-key ./localhost+2-key.pem --experimental-https-cert ./localhost+2.pem -p 3000",
     "build": "next build",
     "start": "next start",
+    "extract": "node extract-project.js",
     "lint": "eslint"
   },
   "dependencies": {

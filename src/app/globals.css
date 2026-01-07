@@ -25,12 +25,27 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* 말풍선 기준을 잡기 위해 relative (지도 좌표엔 영향 X) */
+/* Mapbox Marker Custom Styles */
 .mapboxgl-marker {
   position: relative;
+  cursor: pointer;
+  transition: z-index 0.2s;
 }
 
-/* 기본은 숨김 */
+/* 마커 내부 SVG 크기 제어 (부드러운 확대) */
+.mapboxgl-marker svg {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center bottom;
+  transform: scale(0.9);
+}
+
+/* 선택된 마커 스타일 */
+.mapboxgl-marker.marker-selected svg {
+  transform: scale(1.6);
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+/* 말풍선 (Tooltip) */
 .mapboxgl-marker::after,
 .mapboxgl-marker::before {
   opacity: 0;
@@ -38,7 +53,6 @@ body {
   transition: opacity 120ms ease, transform 120ms ease;
 }
 
-/* 본체 말풍선 */
 .mapboxgl-marker::after {
   content: "";
   position: absolute;
@@ -55,9 +69,6 @@ body {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 
-/* 꼬리 */
-
-/* 호버할 때만 텍스트가 주입되어 나타남 */
 .mapboxgl-marker:hover::after {
   content: attr(data-tip);
   opacity: 1;
@@ -67,55 +78,16 @@ body {
   opacity: 1;
 }
 
-/* 선택 마커(크게 보이는 애)는 말풍선 간격 살짝 보정 (선택사항) */
-.mapboxgl-marker[style*="scale(1.6)"]::after,
-.mapboxgl-marker[style*="scale(1.6)"]::before {
+/* 선택된 마커일 때 말풍선 위치 보정 */
+.mapboxgl-marker.marker-selected::after,
+.mapboxgl-marker.marker-selected::before {
   left: 22px;
 }
 
-/* 마커 호버 라벨 */
-.mapboxgl-marker {
-  position: relative;
-}
-.mapboxgl-marker::after,
-.mapboxgl-marker::before {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.12s, transform 0.12s;
-}
-.mapboxgl-marker::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 18px;
-  transform: translateY(-50%);
-  padding: 6px 10px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  font-size: 12px;
-  white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-}
-.mapboxgl-marker::before {
-  display: none !important;
-}
-
-.mapboxgl-marker:hover::after {
-  content: attr(data-tip);
-  opacity: 1;
-  transform: translateY(-50%) translateX(-110px);
-}
-.mapboxgl-marker:hover::before {
-  opacity: 1;
-}
-
-/* 말풍선 꼬다리(arrow) 제거 */
+/* Popup 스타일 제거 */
 .region-popup .mapboxgl-popup-tip {
   display: none !important;
 }
-
-/* Mapbox 기본 컨텐츠 박스 스타일 제거 */
 .region-popup .mapboxgl-popup-content {
   padding: 0 !important;
   background: transparent !important;
