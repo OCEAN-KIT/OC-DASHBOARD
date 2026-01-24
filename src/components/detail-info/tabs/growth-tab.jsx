@@ -1,7 +1,7 @@
 "use client";
 import LineBasic from "@/components/charts/LineBasic";
 
-export default function GrowthTab({ data, aiOn }) {
+export default function GrowthTab({ data }) {
   const months = data.growth.months;
 
   return (
@@ -24,14 +24,7 @@ export default function GrowthTab({ data, aiOn }) {
           key={g.title}
           className="rounded-xl border border-white/10 bg-white/5 p-4"
         >
-          <div className="flex items-center justify-between">
-            <div className="text-sm font-semibold">{g.title}</div>
-            {aiOn && (
-              <span className="text-[10px] rounded-full px-2 py-[2px] bg-cyan-400/20 border border-cyan-400/30">
-                AI 예측
-              </span>
-            )}
-          </div>
+          <div className="text-sm font-semibold">{g.title}</div>
           <div className="mt-2">
             <LineBasic categories={months} series={g.series} height={220} />
           </div>

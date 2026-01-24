@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ClipLoader, PuffLoader } from "react-spinners";
+import { PuffLoader } from "react-spinners";
 import { fetchAreaDetail } from "@/api/dashboard";
 import { mapAreaDetailToViewModel } from "@/utils/mappers/dashboardMapper";
 import TransplantTab from "./tabs/transplant-tab";
@@ -13,9 +13,6 @@ export default function DetailInfo({ areaId }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const [aiOn, setAiOn] = useState(false);
-  const [aiLoading, setAiLoading] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -40,14 +37,6 @@ export default function DetailInfo({ areaId }) {
     if (!b) return "로딩 중...";
     return `복원 시작일 ${b.startDate} · ${b.habitat} · ${b.depth}m · 면적 ${b.areaSize}`;
   }, [data]);
-
-  const handleToggleAI = async () => {
-    if (aiLoading) return;
-    setAiLoading(true);
-    await new Promise((r) => setTimeout(r, 1000));
-    setAiOn((v) => !v);
-    setAiLoading(false);
-  };
 
   if (loading) {
     return (
@@ -86,36 +75,12 @@ export default function DetailInfo({ areaId }) {
               <div className="text-xs text-white/70">{headerInfo}</div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleToggleAI}
-                disabled={aiLoading}
-                aria-busy={aiLoading}
-                className={[
-                  "h-8 px-3 rounded-full text-xs border transition inline-flex items-center justify-center min-w-24",
-                  aiOn
-                    ? "border-cyan-400/60 bg-cyan-400/20"
-                    : "border-white/10 bg-white/10 hover:bg-white/15",
-                  aiLoading ? "opacity-70 cursor-not-allowed" : "",
-                ].join(" ")}
-                title="AI 기반 예측값 보기"
-              >
-                {aiLoading ? (
-                  <ClipLoader size={16} color="#FFFFFF" />
-                ) : aiOn ? (
-                  "AI 예측 ON"
-                ) : (
-                  "AI 예측 OFF"
-                )}
-              </button>
-
-              <a
-                href="/"
-                className="h-8 px-3 rounded-md text-sm border border-white/10 bg-white/10 hover:bg-white/15 flex items-center"
-              >
-                지도 보기로 돌아가기
-              </a>
-            </div>
+            <a
+              href="/"
+              className="h-8 px-3 rounded-md text-sm border border-white/10 bg-white/10 hover:bg-white/15 flex items-center"
+            >
+              지도 보기로 돌아가기
+            </a>
           </div>
         </div>
       </div>
@@ -132,7 +97,7 @@ export default function DetailInfo({ areaId }) {
         <section>
           <h2 className="mb-3 text-lg font-semibold">성장</h2>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <GrowthTab data={data} aiOn={aiOn} />
+            <GrowthTab data={data} />
           </div>
         </section>
 
@@ -146,7 +111,7 @@ export default function DetailInfo({ areaId }) {
         <section>
           <h2 className="mb-3 text-lg font-semibold">수질</h2>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <WaterTab data={data} aiOn={aiOn} />
+            <WaterTab data={data} />
           </div>
         </section>
 

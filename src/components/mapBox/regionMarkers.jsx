@@ -54,7 +54,9 @@ export default function RegionMarkers({
 
     const getMarkerColor = (area) => {
       // 지역 색상 찾기
-      const parentRegion = regionsData.find(r => r.areas?.some(a => a.id === area.id));
+      const parentRegion = regionsData.find((r) =>
+        r.areas?.some((a) => a.id === area.id)
+      );
       const regionColor = parentRegion?.color ?? "#10b981";
       return STAGE_META[area?.stage]?.color ?? regionColor;
     };
@@ -98,7 +100,7 @@ export default function RegionMarkers({
 
       // 클릭 이벤트
       el.addEventListener("click", (e) => {
-        e.stopPropagation();
+        // e.stopPropagation();
         setWorkingArea(area);
         setActiveStage?.(area.stage);
         changeCameraView(map, area);
@@ -106,8 +108,14 @@ export default function RegionMarkers({
 
       markersRef.current[area.id] = marker;
     });
-
-  }, [mapRef, regionsData, currentLocation, router, setWorkingArea, setActiveStage]);
+  }, [
+    mapRef,
+    regionsData,
+    currentLocation,
+    router,
+    setWorkingArea,
+    setActiveStage,
+  ]);
 
   // 2. 선택 상태(Highlight) 업데이트 (workingArea 변경 시 스타일만 변경)
   useEffect(() => {

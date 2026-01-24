@@ -7,7 +7,7 @@ import axiosInstance from "@/utils/axiosinstance";
 export async function fetchAreaDetail(id) {
   // 프론트의 ID(예: "pohang-1")에서 숫자만 추출하여 백엔드 ID로 사용
   const numericId = String(id).replace(/[^0-9]/g, "");
-  
+
   if (!numericId) {
     throw new Error("Invalid Area ID");
   }
@@ -23,6 +23,9 @@ export async function fetchAreaDetail(id) {
  */
 export async function fetchMarkersInBBox({ minLat, minLon, maxLat, maxLon }) {
   const params = { minLat, minLon, maxLat, maxLon };
-  const res = await axiosInstance.get("/api/dashboard/markers/bbox", { params });
+  const res = await axiosInstance.get("/api/dashboard/markers/bbox", {
+    params,
+  });
+  console.log(res.data);
   return res.data; // ApiData 객체 반환
 }

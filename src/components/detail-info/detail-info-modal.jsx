@@ -22,10 +22,6 @@ export default function DetailInfoModal({ areaId }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // AI 관련 상태 (현재는 백엔드 연동 전이라 Mocking 유지 혹은 API 연동 시 수정)
-  const [aiOn, setAiOn] = useState(false);
-  const [aiLoading, setAiLoading] = useState(false);
   const [frame, setFrame] = useState(0);
 
   // API 데이터 조회
@@ -66,19 +62,6 @@ export default function DetailInfoModal({ areaId }) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [router]);
-
-  // AI 토글 핸들러 (FastAPI 연동 예정)
-  const handleToggleAI = async () => {
-    if (aiLoading) return;
-    setAiLoading(true);
-
-    // TODO: 추후 FastAPI 연동 포인트
-    // const res = await fetch(`/api/ai/predict/${areaId}`); ...
-    await new Promise((r) => setTimeout(r, 1000)); // Mock delay
-
-    setAiOn((v) => !v);
-    setAiLoading(false);
-  };
 
   // 로딩 상태 렌더링
   if (loading) {
@@ -134,9 +117,6 @@ export default function DetailInfoModal({ areaId }) {
         <Header
           areaId={areaId}
           basic={data.basic}
-          aiOn={aiOn}
-          loading={aiLoading}
-          onToggle={handleToggleAI}
           onClose={() => router.back()}
         />
 
@@ -145,11 +125,11 @@ export default function DetailInfoModal({ areaId }) {
         <div className="h-px w-full bg-white/10" />
 
         <div className="p-5 space-y-4">
-          {tab === "overview" && <OverviewTab data={data} aiOn={aiOn} />}
+          {tab === "overview" && <OverviewTab data={data} />}
           {tab === "transplant" && <TransplantTab data={data} />}
-          {tab === "growth" && <GrowthTab data={data} aiOn={aiOn} />}
+          {tab === "growth" && <GrowthTab data={data} />}
           {tab === "biodiversity" && <BiodiversityTab data={data} />}
-          {tab === "water" && <WaterTab data={data} aiOn={aiOn} />}
+          {tab === "water" && <WaterTab data={data} />}
           {tab === "media" && (
             <MediaTab media={data.media} frame={frame} setFrame={setFrame} />
           )}
