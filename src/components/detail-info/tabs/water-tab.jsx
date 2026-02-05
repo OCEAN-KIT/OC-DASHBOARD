@@ -1,7 +1,7 @@
 "use client";
 import LineBasic from "@/components/charts/LineBasic";
 
-export default function WaterTab({ data, aiOn }) {
+export default function WaterTab({ data }) {
   const categories = data.water.map((w) => w.month);
   const temp = data.water.map((w) => w.temp);
   const _do = data.water.map((w) => w.do);
@@ -22,11 +22,6 @@ export default function WaterTab({ data, aiOn }) {
         >
           <div className="flex items-center justify-between">
             <div className="text-sm font-semibold">{c.title}</div>
-            {aiOn && (
-              <span className="text-[10px] rounded-full px-2 py-[2px] bg-cyan-400/20 border border-cyan-400/30">
-                AI 예측
-              </span>
-            )}
           </div>
           <div className="mt-2">
             <LineBasic categories={categories} series={c.series} height={220} />

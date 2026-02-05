@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import ChatBot from "@/components/chat/chat-bot";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +15,6 @@ export default function RootLayout({
     <html lang="ko">
       <body className="min-h-screen">
         {children}
-        <ChatBot />
       </body>
     </html>
   );

@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AREA_DETAILS } from "@/constants/areaDetails";
-import { AREA_DETAILS_AI } from "@/constants/areaDetails-ai";
 import Header from "./header";
 import TabsBar from "./tabs";
 import OverviewTab from "./tabs/overview-tab";
@@ -16,36 +15,15 @@ import MediaTab from "./tabs/media-tab";
 export default function DetailInfoModal({ areaId }) {
   const router = useRouter();
   const [tab, setTab] = useState("overview");
-  const [aiOn, setAiOn] = useState(false);
   const [frame, setFrame] = useState(0);
-  const [loading, setLoading] = useState(false); // ⬅️ 추가
 
-  const data = useMemo(() => {
-    const src = aiOn ? AREA_DETAILS_AI : AREA_DETAILS;
-    return src[areaId] ?? null;
-  }, [aiOn, areaId]);
+  const data = AREA_DETAILS[areaId] ?? null;
 
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && router.back();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [router]);
-
-  // AI 토글 핸들러(부모에서 처리)
-  const handleToggleAI = async () => {
-    if (loading) return;
-    setLoading(true);
-
-    // ⚠️ 임시 지연(Mock). 실제 API 연결 시:
-    // 1) await fetch('/api/predict?areaId=...')
-    // 2) 받은 결과를 상태/스토어에 반영
-    // 3) setAiOn(true/false)로 소스 전환
-    // 4) setLoading(false)
-    await new Promise((r) => setTimeout(r, 1000));
-
-    setAiOn((v) => !v);
-    setLoading(false);
-  };
 
   if (!data) {
     return (
@@ -86,9 +64,6 @@ export default function DetailInfoModal({ areaId }) {
         <Header
           areaId={areaId}
           basic={data.basic}
-          aiOn={aiOn}
-          loading={loading} // ⬅️ 추가
-          onToggle={handleToggleAI} // ⬅️ 추가
           onClose={() => router.back()}
         />
 
@@ -97,11 +72,11 @@ export default function DetailInfoModal({ areaId }) {
         <div className="h-px w-full bg-white/10" />
 
         <div className="p-5 space-y-4">
-          {tab === "overview" && <OverviewTab data={data} aiOn={aiOn} />}
+          {tab === "overview" && <OverviewTab data={data} />}
           {tab === "transplant" && <TransplantTab data={data} />}
-          {tab === "growth" && <GrowthTab data={data} aiOn={aiOn} />}
+          {tab === "growth" && <GrowthTab data={data} />}
           {tab === "biodiversity" && <BiodiversityTab data={data} />}
-          {tab === "water" && <WaterTab data={data} aiOn={aiOn} />}
+          {tab === "water" && <WaterTab data={data} />}
           {tab === "media" && (
             <MediaTab media={data.media} frame={frame} setFrame={setFrame} />
           )}

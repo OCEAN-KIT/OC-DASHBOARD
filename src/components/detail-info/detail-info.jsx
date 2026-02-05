@@ -1,44 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { ClipLoader } from "react-spinners";
+import { useMemo } from "react";
 import { AREA_DETAILS } from "@/constants/areaDetails";
-import { AREA_DETAILS_AI } from "@/constants/areaDetails-ai";
 import TransplantTab from "./tabs/transplant-tab";
 import GrowthTab from "./tabs/growth-tab";
 import BiodiversityTab from "./tabs/bio-diversity-tab";
 import WaterTab from "./tabs/water-tab";
 
 export default function DetailInfo({ areaId }) {
-  const [aiOn, setAiOn] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  // aiOn 여부에 따라 데이터 소스 전환
-  const data = useMemo(() => {
-    const src = aiOn ? AREA_DETAILS_AI : AREA_DETAILS;
-    return src[areaId] ?? null;
-  }, [aiOn, areaId]);
+  const data = AREA_DETAILS[areaId] ?? null;
 
   const headerInfo = useMemo(() => {
     const b = data?.basic;
     if (!b) return "데이터 없음";
     return `복원 시작일 ${b.startDate} · ${b.habitat} · ${b.depth}m · 면적 ${b.areaSize}`;
   }, [data]);
-
-  // AI 토글 + 로딩(Mock 1초) — 나중에 실제 API로 교체
-  const handleToggleAI = async () => {
-    if (loading) return;
-    setLoading(true);
-
-    // ⚠️ 임시 지연. 실제 연결 시:
-    // const res = await fetch(`/api/predict?areaId=${areaId}`);
-    // const predicted = await res.json();
-    // 상태에 반영한 뒤 setAiOn(true/false)
-    await new Promise((r) => setTimeout(r, 1000));
-
-    setAiOn((v) => !v);
-    setLoading(false);
-  };
 
   if (!data) {
     return (
@@ -70,28 +46,6 @@ export default function DetailInfo({ areaId }) {
             </div>
 
             <div className="flex items-center gap-2">
-              <button
-                onClick={handleToggleAI}
-                disabled={loading}
-                aria-busy={loading}
-                className={[
-                  "h-8 px-3 rounded-full text-xs border transition inline-flex items-center justify-center min-w-24",
-                  aiOn
-                    ? "border-cyan-400/60 bg-cyan-400/20"
-                    : "border-white/10 bg-white/10 hover:bg-white/15",
-                  loading ? "opacity-70 cursor-not-allowed" : "",
-                ].join(" ")}
-                title="AI 기반 예측값 보기"
-              >
-                {loading ? (
-                  <ClipLoader size={16} color="#FFFFFF" />
-                ) : aiOn ? (
-                  "AI 예측 ON"
-                ) : (
-                  "AI 예측 OFF"
-                )}
-              </button>
-
               <a
                 href="/"
                 className="h-8 px-3 rounded-md text-sm border border-white/10 bg-white/10 hover:bg-white/15 flex items-center"
@@ -115,7 +69,7 @@ export default function DetailInfo({ areaId }) {
         <section>
           <h2 className="mb-3 text-lg font-semibold">성장</h2>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <GrowthTab data={data} aiOn={aiOn} />
+            <GrowthTab data={data} />
           </div>
         </section>
 
@@ -129,7 +83,7 @@ export default function DetailInfo({ areaId }) {
         <section>
           <h2 className="mb-3 text-lg font-semibold">수질</h2>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <WaterTab data={data} aiOn={aiOn} />
+            <WaterTab data={data} />
           </div>
         </section>
 

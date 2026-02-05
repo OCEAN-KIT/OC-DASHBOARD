@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-export default function OverviewTab({ data, aiOn }) {
+export default function OverviewTab({ data }) {
   // 데이터에서 마지막 값 기준 간단 KPI
   const attach = data?.growth?.attachment?.at(-1) ?? 0;
   const survival = data?.growth?.survival?.at(-1) ?? 0;
@@ -30,7 +30,7 @@ export default function OverviewTab({ data, aiOn }) {
             <div className="rounded-xl border border-white/15 bg-black/35 backdrop-blur-sm p-3">
               <div className="text-[11px] text-white/70">착생률</div>
               <div className="mt-0.5 text-lg font-semibold">
-                {aiOn ? `${attach + 1}% (예측)` : `${attach}%`}
+                {attach}%
               </div>
               <div className="mt-2 h-1.5 rounded bg-white/10">
                 <div
@@ -43,9 +43,7 @@ export default function OverviewTab({ data, aiOn }) {
             <div className="rounded-xl border border-white/15 bg-black/35 backdrop-blur-sm p-3">
               <div className="text-[11px] text-white/70">생존률</div>
               <div className="mt-0.5 text-lg font-semibold">
-                {aiOn
-                  ? `${survival} → ${Math.max(survival - 2, 0)}%`
-                  : `${survival}%`}
+                {survival}%
               </div>
               <div className="mt-2 h-1.5 rounded bg-white/10">
                 <div
@@ -58,9 +56,7 @@ export default function OverviewTab({ data, aiOn }) {
             <div className="rounded-xl border border-white/15 bg-black/35 backdrop-blur-sm p-3">
               <div className="text-[11px] text-white/70">성장률</div>
               <div className="mt-0.5 text-lg font-semibold">
-                {aiOn
-                  ? `${(growthLast + 0.2).toFixed(1)} mm/일`
-                  : `${growthLast.toFixed(1)} mm/일`}
+                {growthLast.toFixed(1)} mm/일
               </div>
               <div className="mt-2 h-1.5 rounded bg-white/10">
                 <div
