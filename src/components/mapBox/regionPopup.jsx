@@ -59,8 +59,8 @@ function formatDate(iso) {
 export default function RegionPopup({ region, onOpen }) {
   if (!region) return null;
 
-  const { label, startDate, stage, depth, habitat } = region;
-  const stageCfg = getPopupStyle(stage);
+  const { name, startDate, level, depth, habitat } = region;
+  const stageCfg = getPopupStyle(level);
 
   return (
     <div
@@ -100,7 +100,7 @@ export default function RegionPopup({ region, onOpen }) {
           }}
         />
         <div style={{ fontWeight: 700, fontSize: 15, color: "#fff" }}>
-          {label ?? "-"}
+          {name ?? "-"}
         </div>
         <span
           style={{
@@ -113,10 +113,10 @@ export default function RegionPopup({ region, onOpen }) {
             borderRadius: 999,
             border: `1px solid ${rgba(stageCfg.text, 0.13)
               .replace("rgb", "rgba")
-              .replace(")", ", 1)")}`, // 살짝 테두리
+              .replace(")", ", 1)")}`,
           }}
         >
-          {stage ?? "단계 미지정"}
+          {STAGE_META[level] ? level : "단계 미지정"}
         </span>
       </div>
 

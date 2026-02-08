@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { REGIONS } from "@/constants/regions";
 import changeCameraView from "@/utils/map/changeCameraView";
 import ControlsHeader from "./controlsHeader";
+import RegionSelector from "./regionSelector";
 import AreaGroupsList from "./areaGroupList";
 import { STAGE_META, STAGE_ORDER } from "@/constants/stageMeta";
 import Image from "next/image";
@@ -21,6 +21,8 @@ function daysAgo(area) {
 export default function TopRightControls({
   currentLocation,
   setCurrentLocation,
+  areas,
+  isLoading,
   workingArea,
   setWorkingArea,
   mapRef,
@@ -29,11 +31,6 @@ export default function TopRightControls({
 }) {
   const [open, setOpen] = useState(true);
   const [query, setQuery] = useState("");
-
-  const activeRegion = useMemo(() => {
-    if (!currentLocation) return null;
-    return REGIONS.find((r) => r.id === currentLocation.id) ?? null;
-  }, [currentLocation]);
 
   const resetView = () => {
     if (!mapRef?.current) return;
@@ -44,33 +41,32 @@ export default function TopRightControls({
     });
   };
 
-  const handleRegion = (id) => {
-    if (currentLocation?.id === id) {
+  const handleRegion = (region) => {
+    if (currentLocation?.id === region.id) {
       setCurrentLocation(null);
       setWorkingArea(null);
       resetView();
       return;
     }
-    const selected = REGIONS.find((r) => r.id === id) ?? null;
-    setCurrentLocation(selected);
+    setCurrentLocation(region);
     setWorkingArea(null);
-    if (mapRef?.current && selected) changeCameraView(mapRef.current, selected);
+    if (mapRef?.current) changeCameraView(mapRef.current, region);
   };
 
   const handleArea = (area) => {
     setWorkingArea(area);
-    setActiveStage(area.stage);
+    setActiveStage(area.level);
     if (mapRef?.current && area) changeCameraView(mapRef.current, area);
   };
 
   const grouped = useMemo(() => {
-    if (!activeRegion) return [];
+    if (!areas.length) return [];
     const q = query.trim().toLowerCase();
 
-    const items = (activeRegion.areas ?? []).filter((a) => {
-      const hitStage = activeStage ? a.stage === activeStage : true;
+    const items = areas.filter((a) => {
+      const hitStage = activeStage ? a.level === activeStage : true;
       const hitQuery = q
-        ? (a.label ?? "").toLowerCase().includes(q) ||
+        ? (a.name ?? "").toLowerCase().includes(q) ||
           (a.habitat ?? "").toLowerCase().includes(q)
         : true;
       return hitStage && hitQuery;
@@ -79,9 +75,9 @@ export default function TopRightControls({
     return STAGE_ORDER.map((stage) => ({
       stage,
       color: STAGE_META[stage]?.color,
-      items: items.filter((a) => a.stage === stage),
+      items: items.filter((a) => a.level === stage),
     })).filter((g) => g.items.length > 0);
-  }, [activeRegion, activeStage, query]);
+  }, [areas, activeStage, query]);
 
   return (
     <div
@@ -113,26 +109,10 @@ export default function TopRightControls({
           {/* 지역 스위처 + 검색 같은 줄 */}
           <div className="px-4 pt-2">
             <div className="flex items-center gap-3">
-              {/* 지역 스위처: 가로 스크롤 가능 */}
-              <div className="flex gap-2 overflow-x-auto pr-1 max-w-[55%]">
-                {REGIONS.map((r) => {
-                  const active = currentLocation?.id === r.id;
-                  return (
-                    <button
-                      key={r.id}
-                      onClick={() => handleRegion(r.id)}
-                      className={`h-9 px-4 rounded-xl border text-sm font-semibold whitespace-nowrap transition
-                  ${
-                    active
-                      ? "border-cyan-400/60 bg-cyan-400/20 shadow-[inset_0_0_0_2px_rgba(34,211,238,0.25)]"
-                      : "border-white/10 bg-white/10 hover:bg-white/15"
-                  }`}
-                    >
-                      {r.label}
-                    </button>
-                  );
-                })}
-              </div>
+              <RegionSelector
+                activeId={currentLocation?.id}
+                onSelect={handleRegion}
+              />
 
               {/* 검색창: 남은 공간 꽉 채움 */}
               <div className="flex-1 min-w-[140px]">
@@ -156,9 +136,9 @@ export default function TopRightControls({
           <AreaGroupsList
             grouped={grouped}
             onSelectArea={handleArea}
-            stageMeta={STAGE_META}
             daysAgo={daysAgo}
-            activeRegion={!!activeRegion}
+            activeRegion={!!currentLocation}
+            isLoading={isLoading}
             workingArea={workingArea}
           />
         </>

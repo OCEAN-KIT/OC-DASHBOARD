@@ -8,6 +8,7 @@ import TopRightControls from "@/components/mapBox/topRightControls/topRightContr
 import changeCameraView from "@/utils/map/changeCameraView";
 import RegionMarkers from "./regionMarkers";
 import Image from "next/image";
+import { useAreas } from "@/hooks/useAreas";
 
 export default function MapView() {
   const mapRef = useRef(null);
@@ -16,6 +17,10 @@ export default function MapView() {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [workingArea, setWorkingArea] = useState(null);
   const [activeStage, setActiveStage] = useState(null);
+
+  const { data: areas = [], isLoading } = useAreas(currentLocation?.id ?? null);
+
+  console.log(areas);
 
   // 지역 선택 시 카메라 이동
   useEffect(() => {
@@ -40,7 +45,7 @@ export default function MapView() {
     if (!valid) {
       console.error(
         "[Mapbox] Invalid or missing token. " +
-          "Check .env(.local) NEXT_PUBLIC_MAPBOX_TOKEN and restart the dev server."
+          "Check .env(.local) NEXT_PUBLIC_MAPBOX_TOKEN and restart the dev server.",
       );
       return;
     }
@@ -67,7 +72,7 @@ export default function MapView() {
       // 포항~울진 초기 뷰 설정
       const bounds = new mapboxgl.LngLatBounds(
         COORDS.POHANG,
-        COORDS.POHANG
+        COORDS.POHANG,
       ).extend(COORDS.ULJIN);
 
       new mapboxgl.Marker().setLngLat(COORDS.POHANG).addTo(map);
@@ -144,6 +149,7 @@ export default function MapView() {
       <RegionMarkers
         mapRef={mapRef}
         currentLocation={currentLocation}
+        areas={areas}
         workingArea={workingArea}
         setWorkingArea={setWorkingArea}
         setActiveStage={setActiveStage}
@@ -152,6 +158,8 @@ export default function MapView() {
       <TopRightControls
         currentLocation={currentLocation}
         setCurrentLocation={setCurrentLocation}
+        areas={areas}
+        isLoading={isLoading}
         workingArea={workingArea}
         setWorkingArea={setWorkingArea}
         mapRef={mapRef}

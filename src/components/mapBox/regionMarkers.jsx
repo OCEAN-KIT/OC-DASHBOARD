@@ -7,10 +7,10 @@ import { createRoot } from "react-dom/client";
 import RegionPopup from "./regionPopup";
 import { STAGE_META } from "@/constants/stageMeta";
 import { useRouter } from "next/navigation";
-
 export default function RegionMarkers({
   mapRef,
   currentLocation,
+  areas,
   workingArea,
   setWorkingArea,
   setActiveStage,
@@ -25,13 +25,12 @@ export default function RegionMarkers({
     const popups = [];
     const roots = [];
 
-    const getMarkerColor = (area, region) =>
-      STAGE_META[area?.stage]?.color ?? region?.color ?? "#10b981";
+    const getMarkerColor = (area) =>
+      STAGE_META[area?.level]?.color ?? currentLocation?.color ?? "#10b981";
 
-    if (currentLocation) {
-      const regionAreas = currentLocation.areas ?? [];
+    if (currentLocation && areas.length) {
 
-      regionAreas.forEach((a) => {
+      areas.forEach((a) => {
         const isSelected = workingArea?.id === a.id;
 
         // React로 팝업 DOM 렌더
@@ -54,19 +53,19 @@ export default function RegionMarkers({
         popups.push(popup);
 
         const marker = new mapboxgl.Marker({
-          color: getMarkerColor(a, currentLocation),
+          color: getMarkerColor(a),
           scale: isSelected ? 1.6 : 0.9,
         })
-          .setLngLat(a.center)
+          .setLngLat([a.lon, a.lat])
           .setPopup(popup)
           .addTo(map);
 
         const el = marker.getElement();
-        el.setAttribute("data-tip", a?.label ?? "상세 보기");
+        el.setAttribute("data-tip", a?.name ?? "상세 보기");
 
         el.addEventListener("click", () => {
           setWorkingArea(a);
-          setActiveStage?.(a.stage);
+          setActiveStage?.(a.level);
           changeCameraView(map, a);
         });
 
@@ -82,6 +81,7 @@ export default function RegionMarkers({
   }, [
     mapRef,
     currentLocation,
+    areas,
     workingArea,
     setWorkingArea,
     setActiveStage,
