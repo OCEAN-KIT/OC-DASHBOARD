@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { COORDS } from "@/constants/geo";
+import { COORDS } from "@/constants/regions";
 import TopRightControls from "@/components/mapBox/topRightControls/topRightControls";
 import changeCameraView from "@/utils/map/changeCameraView";
 import RegionMarkers from "./regionMarkers";
@@ -73,8 +73,8 @@ export default function MapView() {
         COORDS.POHANG,
       ).extend(COORDS.ULJIN);
 
-      new mapboxgl.Marker().setLngLat(COORDS.POHANG).addTo(map);
-      new mapboxgl.Marker().setLngLat(COORDS.ULJIN).addTo(map);
+      new mapboxgl.Marker({ color: "#ef4444" }).setLngLat(COORDS.POHANG).addTo(map);
+      new mapboxgl.Marker({ color: "#ef4444" }).setLngLat(COORDS.ULJIN).addTo(map);
 
       map.fitBounds(bounds, {
         padding: 80,

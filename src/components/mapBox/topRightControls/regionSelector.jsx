@@ -1,9 +1,6 @@
 "use client";
 
-const REGIONS = [
-  { id: "POHANG", label: "포항", color: "#10b981", center: [129.343, 36.019] },
-  { id: "ULJIN", label: "울진", color: "#3b82f6", center: [129.409, 36.993] },
-];
+import { REGIONS } from "@/constants/regions";
 
 export default function RegionSelector({ activeId, onSelect }) {
   return (

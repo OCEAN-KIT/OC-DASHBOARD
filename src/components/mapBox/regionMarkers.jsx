@@ -26,7 +26,7 @@ export default function RegionMarkers({
     const roots = [];
 
     const getMarkerColor = (area) =>
-      STAGE_META[area?.level]?.color ?? currentLocation?.color ?? "#10b981";
+      STAGE_META[area?.level]?.color ?? currentLocation?.color ?? "#ef4444";
 
     if (currentLocation && areas.length) {
       areas.forEach((a) => {
@@ -76,7 +76,7 @@ export default function RegionMarkers({
     return () => {
       markers.forEach((m) => m.remove());
       popups.forEach((p) => p.remove());
-      roots.forEach((r) => r.unmount());
+      roots.forEach((r) => setTimeout(() => r.unmount(), 0));
     };
   }, [
     mapRef,
