@@ -5,40 +5,60 @@ type Props = {
   chart: ChartData;
 };
 
+const MAX_MONTHS = 6;
 const CHART_COLOR = "#2C67BC";
 
-export default function RecentWorkChart({ chart }: Props) {
-  const values = chart.values.slice(-3);
-  const labels = chart.labels.slice(-3);
+export default function GrowthChart({ chart }: Props) {
+  const values = chart.values.slice(-MAX_MONTHS);
+  const labels = chart.labels.slice(-MAX_MONTHS);
   const hasData = values.length > 0 && values.some((v) => v > 0);
 
   return (
     <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
       <div className="flex items-center gap-3 mb-1">
-        <h3 className="text-[11px] text-white/50">최근 3개월 작업횟수</h3>
-        {chart.period && (
-          <span className="text-[10px] text-white/30">{chart.period}</span>
+        <h3 className="text-[13px] text-white/60">대표 개체 성장 추이</h3>
+        {chart.targetSpecies && (
+          <span
+            className="text-[13px] font-semibold px-2.5 py-0.5 rounded-md"
+            style={{ backgroundColor: `${CHART_COLOR}25`, color: CHART_COLOR }}
+          >
+            {chart.targetSpecies}
+          </span>
         )}
+        <div className="ml-auto text-right">
+          {chart.period && (
+            <span className="text-[12px] text-white/40">{chart.period}</span>
+          )}
+        </div>
       </div>
+      <p className="text-[12px] text-white/35 mb-1">측정된 특정 개체 기준</p>
+
       {hasData ? (
-        <div className="flex-1 min-h-0 flex ">
-          <LineChart values={values} labels={labels} />
+        <div className="flex-1 min-h-0 flex">
+          <LineChart values={values} labels={labels} unit={chart.unit} />
         </div>
       ) : (
         <div className="flex-1 flex items-center justify-center text-sm text-white/40">
-          최근 작업이 없습니다.
+          성장 데이터가 없습니다.
         </div>
       )}
     </div>
   );
 }
 
-/* SVG 꺽은선 그래프 */
-function LineChart({ values, labels }: { values: number[]; labels: string[] }) {
-  const W = 280;
-  const H = 100;
-  const PX = 24;
-  const PY = 15;
+function LineChart({
+  values,
+  labels,
+  unit,
+}: {
+  values: number[];
+  labels: string[];
+  unit: string;
+}) {
+  const W = 620;
+  const H = 140;
+  const PX = 32;
+  const PY = 20;
   const maxVal = Math.max(...values, 1);
 
   const points = values.map((v, i) => {
@@ -54,21 +74,22 @@ function LineChart({ values, labels }: { values: number[]; labels: string[] }) {
     .map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`)
     .join(" ");
 
-  const gradientId = "recent-work-gradient";
+  const gradientId = "growth-gradient";
   const areaPath = `${linePath} L${points[points.length - 1].x},${H - PY} L${points[0].x},${H - PY} Z`;
 
   const formatLabel = (label: string | number[]) => {
     if (Array.isArray(label)) {
-      return `${Number(label[1])}월`;
-    }
-    if (typeof label === "string" && label.includes("-")) {
-      return `${Number(label.split("-")[1])}월`;
-    }
-    if (typeof label === "string" && label.includes("/")) {
-      return `${Number(label.split("/")[0])}월`;
+      const year = String(label[0]);
+      const month = label[1] != null ? String(label[1]).padStart(2, "0") : null;
+      const day = label[2] != null ? String(label[2]).padStart(2, "0") : null;
+      if (month && day) return `${year}년 ${month}월 ${day}일`;
+      if (month) return `${year}년 ${month}월`;
+      return `${year}년`;
     }
     return String(label);
   };
+
+  const displayUnit = unit || "mm";
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full mt-1">
@@ -79,6 +100,7 @@ function LineChart({ values, labels }: { values: number[]; labels: string[] }) {
         </linearGradient>
       </defs>
 
+      {/* 가로 기준선 */}
       <line
         x1={PX}
         y1={H - PY}
@@ -89,8 +111,12 @@ function LineChart({ values, labels }: { values: number[]; labels: string[] }) {
       />
 
       <SvgReveal width={W} height={H}>
-        {points.length > 1 && <path d={areaPath} fill={`url(#${gradientId})`} />}
+        {/* 영역 그라데이션 */}
+        {points.length > 1 && (
+          <path d={areaPath} fill={`url(#${gradientId})`} />
+        )}
 
+        {/* 선 */}
         <path
           d={linePath}
           fill="none"
@@ -100,31 +126,34 @@ function LineChart({ values, labels }: { values: number[]; labels: string[] }) {
           strokeLinejoin="round"
         />
 
+        {/* 데이터 포인트 */}
         {points.map((p, i) => (
           <g key={i}>
             <circle cx={p.x} cy={p.y} r={3.5} fill={CHART_COLOR} />
             <circle cx={p.x} cy={p.y} r={2} fill="#0d1117" />
             <text
               x={p.x}
-              y={p.y - 8}
+              y={p.y - 9}
               textAnchor="middle"
               className="fill-white/70"
-              fontSize={9}
+              fontSize={11}
             >
-              {p.v}회
+              {p.v}
+              {displayUnit}
             </text>
           </g>
         ))}
       </SvgReveal>
 
+      {/* x축 라벨 (애니메이션 제외) */}
       {points.map((p, i) => (
         <text
           key={`label-${i}`}
           x={p.x}
-          y={H - 2}
+          y={H - 4}
           textAnchor="middle"
           className="fill-white/40"
-          fontSize={8}
+          fontSize={10}
         >
           {formatLabel(labels[i])}
         </text>
