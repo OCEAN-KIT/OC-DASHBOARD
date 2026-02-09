@@ -29,18 +29,18 @@ export default function RegionMarkers({
       STAGE_META[area?.level]?.color ?? currentLocation?.color ?? "#10b981";
 
     if (currentLocation && areas.length) {
-
       areas.forEach((a) => {
         const isSelected = workingArea?.id === a.id;
 
         // React로 팝업 DOM 렌더
         const popupNode = document.createElement("div");
         const popupRoot = createRoot(popupNode);
+        roots.push(popupRoot);
         popupRoot.render(
           <RegionPopup
             region={a}
             onOpen={() => router.push(`/detailInfo/${a.id}`)}
-          />
+          />,
         );
 
         const popup = new mapboxgl.Popup({
