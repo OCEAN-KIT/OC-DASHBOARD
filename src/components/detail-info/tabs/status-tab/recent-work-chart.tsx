@@ -34,7 +34,7 @@ export default function RecentWorkChart({ chart }: Props) {
 }
 
 /* SVG 꺽은선 그래프 */
-function LineChart({ values, labels }: { values: number[]; labels: string[] }) {
+function LineChart({ values, labels }: { values: number[]; labels: number[][] }) {
   const W = 280;
   const H = 100;
   const PX = 24;
@@ -57,18 +57,7 @@ function LineChart({ values, labels }: { values: number[]; labels: string[] }) {
   const gradientId = "recent-work-gradient";
   const areaPath = `${linePath} L${points[points.length - 1].x},${H - PY} L${points[0].x},${H - PY} Z`;
 
-  const formatLabel = (label: string | number[]) => {
-    if (Array.isArray(label)) {
-      return `${Number(label[1])}월`;
-    }
-    if (typeof label === "string" && label.includes("-")) {
-      return `${Number(label.split("-")[1])}월`;
-    }
-    if (typeof label === "string" && label.includes("/")) {
-      return `${Number(label.split("/")[0])}월`;
-    }
-    return String(label);
-  };
+  const formatLabel = (label: number[]) => `${label[1]}월`;
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full mt-1">

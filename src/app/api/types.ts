@@ -33,7 +33,7 @@ export type AreasResponse = {
 };
 
 export type ChartData = {
-  labels: string[];
+  labels: number[][];
   values: number[];
   unit: string;
   targetSpecies: string;

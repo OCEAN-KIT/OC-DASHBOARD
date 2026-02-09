@@ -53,7 +53,7 @@ function LineChart({
   unit,
 }: {
   values: number[];
-  labels: string[];
+  labels: number[][];
   unit: string;
 }) {
   const gradientId = useId();
@@ -78,17 +78,8 @@ function LineChart({
 
   const areaPath = `${linePath} L${points[points.length - 1].x},${H - PY} L${points[0].x},${H - PY} Z`;
 
-  const formatLabel = (label: string | number[]) => {
-    if (Array.isArray(label)) {
-      const year = String(label[0]);
-      const month = label[1] != null ? String(label[1]).padStart(2, "0") : null;
-      const day = label[2] != null ? String(label[2]).padStart(2, "0") : null;
-      if (month && day) return `${year}년 ${month}월 ${day}일`;
-      if (month) return `${year}년 ${month}월`;
-      return `${year}년`;
-    }
-    return String(label);
-  };
+  const formatLabel = (label: number[]) =>
+    `${label[0]}년 ${label[1]}월 ${label[2]}일`;
 
   const displayUnit = unit || "mm";
 
