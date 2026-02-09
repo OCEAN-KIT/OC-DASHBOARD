@@ -11,8 +11,7 @@ const CHART_COLOR = "#2C67BC";
 export default function TemperatureChart({ chart }: Props) {
   const values = chart.values.slice(-MAX_MONTHS);
   const labels = chart.labels.slice(-MAX_MONTHS);
-  const hasData = values.length > 0 && values.some((v) => v > 0);
-
+  const hasData = values.length > 0;
   return (
     <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
       <div className="flex items-center gap-3 mb-1">
@@ -51,14 +50,16 @@ function LineChart({
   const H = 140;
   const PX = 32;
   const PY = 20;
-  const maxVal = Math.max(...values, 1);
+  const minVal = Math.min(...values);
+  const maxVal = Math.max(...values);
+  const range = maxVal - minVal || 1;
 
   const points = values.map((v, i) => {
     const x =
       values.length === 1
         ? W / 2
         : PX + (i / (values.length - 1)) * (W - PX * 2);
-    const y = PY + (1 - v / maxVal) * (H - PY * 2);
+    const y = PY + (1 - (v - minVal) / range) * (H - PY * 2);
     return { x, y, v };
   });
 

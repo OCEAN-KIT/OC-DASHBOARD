@@ -16,9 +16,9 @@ type Props = {
 export default function TimelineView({ items }: Props) {
   const [activeIdx, setActiveIdx] = useState(0);
   const hasData = items.length > 0;
-  const active = items[activeIdx];
+  const active = hasData ? items[activeIdx] : null;
 
-  const [y, m] = active.label.split(".");
+  const [y, m] = active?.label?.split(".") ?? ["", ""];
 
   return (
     <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">

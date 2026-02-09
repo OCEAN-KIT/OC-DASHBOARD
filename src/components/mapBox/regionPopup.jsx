@@ -111,9 +111,7 @@ export default function RegionPopup({ region, onOpen }) {
             background: stageCfg.bg,
             padding: "4px 8px",
             borderRadius: 999,
-            border: `1px solid ${rgba(stageCfg.text, 0.13)
-              .replace("rgb", "rgba")
-              .replace(")", ", 1)")}`,
+            border: `1px solid ${rgba(stageCfg.text, 0.13)}`,
           }}
         >
           {STAGE_META[level] ? level : "단계 미지정"}

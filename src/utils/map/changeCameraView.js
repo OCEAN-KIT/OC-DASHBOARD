@@ -6,7 +6,11 @@
  * @param {number} [newLocation.zoom] - 선택적 커스텀 줌 레벨
  */
 export default function changeCameraView(map, newLocation) {
-  const center = newLocation?.center ?? (newLocation?.lon != null ? [newLocation.lon, newLocation.lat] : null);
+  const center =
+    newLocation?.center ??
+    (newLocation?.lon != null && newLocation?.lat != null
+      ? [newLocation.lon, newLocation.lat]
+      : null);
   if (!map || !center) return;
 
   const [lng, lat] = center;

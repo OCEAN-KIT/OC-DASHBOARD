@@ -1,5 +1,6 @@
 import type { ChartData } from "@/app/api/types";
 import SvgReveal from "@/components/charts/SvgReveal";
+import { useId } from "react";
 
 type Props = {
   chart: ChartData;
@@ -55,6 +56,7 @@ function LineChart({
   labels: string[];
   unit: string;
 }) {
+  const gradientId = useId();
   const W = 620;
   const H = 140;
   const PX = 32;
@@ -74,7 +76,6 @@ function LineChart({
     .map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`)
     .join(" ");
 
-  const gradientId = "growth-gradient";
   const areaPath = `${linePath} L${points[points.length - 1].x},${H - PY} L${points[0].x},${H - PY} Z`;
 
   const formatLabel = (label: string | number[]) => {

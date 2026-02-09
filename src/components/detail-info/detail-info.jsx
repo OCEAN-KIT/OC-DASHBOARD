@@ -9,7 +9,7 @@ import WaterTab from "./tabs/water-tab";
 import { useAreaDetails } from "@/hooks/useAreas";
 
 export default function DetailInfo({ areaId }) {
-  const { area, isLoading, isError } = useAreaDetails(areaId);
+  const { data: area, isLoading, isError } = useAreaDetails(areaId);
 
   if (!isError) {
     return (
