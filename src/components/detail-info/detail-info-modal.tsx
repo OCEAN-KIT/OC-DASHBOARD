@@ -8,6 +8,7 @@ import OverviewTab from "./tabs/overview-tab";
 import StatusTab from "./tabs/status-tab";
 import EcologyTab from "./tabs/ecology-tab";
 import EnvironmentTab from "./tabs/environment-tab";
+import PhotosTab from "./tabs/photos-tab";
 import { useAreaDetails } from "@/hooks/useAreas";
 
 type Props = {
@@ -86,7 +87,7 @@ export default function DetailInfoModal({ areaId }: Props) {
           {tab === "status" && <StatusTab data={area} />}
           {tab === "ecology" && <EcologyTab data={area} />}
           {tab === "environment" && <EnvironmentTab data={area} />}
-          {/* {tab === "photos" && <PhotosTab data={area} />} */}
+          {tab === "photos" && <PhotosTab data={area} />}
         </div>
       </div>
 
