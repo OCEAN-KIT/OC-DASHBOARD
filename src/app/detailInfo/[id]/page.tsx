@@ -1,11 +1,10 @@
 import DetailInfo from "@/components/detail-info/detail-info";
-import React from "react";
 
-export default function DetailInfoPage({
+export default async function DetailInfoPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = React.use(params);
+  const { id } = await params;
   return <DetailInfo areaId={Number(id)} />;
 }

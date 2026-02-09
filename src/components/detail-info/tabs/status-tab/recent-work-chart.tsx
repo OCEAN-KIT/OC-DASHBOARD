@@ -1,5 +1,6 @@
 import type { ChartData } from "@/app/api/types";
 import SvgReveal from "@/components/charts/SvgReveal";
+import { useId } from "react";
 
 type Props = {
   chart: ChartData;
@@ -34,7 +35,14 @@ export default function RecentWorkChart({ chart }: Props) {
 }
 
 /* SVG 꺽은선 그래프 */
-function LineChart({ values, labels }: { values: number[]; labels: number[][] }) {
+function LineChart({
+  values,
+  labels,
+}: {
+  values: number[];
+  labels: number[][];
+}) {
+  const gradientId = useId();
   const W = 280;
   const H = 100;
   const PX = 24;
@@ -54,7 +62,6 @@ function LineChart({ values, labels }: { values: number[]; labels: number[][] })
     .map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`)
     .join(" ");
 
-  const gradientId = "recent-work-gradient";
   const areaPath = `${linePath} L${points[points.length - 1].x},${H - PY} L${points[0].x},${H - PY} Z`;
 
   const formatLabel = (label: number[]) => `${label[1]}월`;
@@ -78,7 +85,9 @@ function LineChart({ values, labels }: { values: number[]; labels: number[][] })
       />
 
       <SvgReveal width={W} height={H}>
-        {points.length > 1 && <path d={areaPath} fill={`url(#${gradientId})`} />}
+        {points.length > 1 && (
+          <path d={areaPath} fill={`url(#${gradientId})`} />
+        )}
 
         <path
           d={linePath}
