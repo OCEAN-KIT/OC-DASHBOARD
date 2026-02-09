@@ -5,9 +5,6 @@ import Providers from "./providers";
 export const metadata: Metadata = {
   title: "OC-DASHBOARD",
   description: "Ocean Campus Dashboard",
-  icons: {
-    icon: "/oceanCampusLogo.png",
-  },
 };
 
 export default function RootLayout({
