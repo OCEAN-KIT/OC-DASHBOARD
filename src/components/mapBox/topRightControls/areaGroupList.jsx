@@ -1,36 +1,30 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import AreaItemCard from "./areaItemCard";
 
 export default function AreaGroupsList({
   grouped,
   onSelectArea,
-  stageMeta,
   daysAgo,
   activeRegion,
   workingArea,
+  isLoading,
 }) {
-  const defaultExpanded = useMemo(() => {
-    const m = {};
-    grouped.forEach((g) => (m[g.stage] = true));
-    return m;
-  }, [grouped]);
-
-  const [expanded, setExpanded] = useState(defaultExpanded);
-
-  useMemo(() => {
-    setExpanded((prev) => {
-      const next = { ...prev };
-      grouped.forEach((g) => {
-        if (next[g.stage] === undefined) next[g.stage] = true;
-      });
-      return next;
-    });
-  }, [grouped]);
+  const [expanded, setExpanded] = useState(() =>
+    Object.fromEntries(grouped.map((g) => [g.stage, true])),
+  );
 
   const toggle = (stage) => setExpanded((s) => ({ ...s, [stage]: !s[stage] }));
+
+  if (isLoading) {
+    return (
+      <div className="px-3 py-8 text-center text-sm text-white/60">
+        불러오는 중...
+      </div>
+    );
+  }
 
   return (
     <div className="max-h-[56vh] overflow-auto px-2 py-2">
@@ -43,7 +37,7 @@ export default function AreaGroupsList({
                 <button
                   type="button"
                   onClick={() => toggle(group.stage)}
-                  className="sticky top-0 z-10 -mx-2 flex w-[calc(100%+16px)] items-center justify-between 
+                  className="sticky top-0 z-10 -mx-2 flex w-[calc(100%+16px)] items-center justify-between
                              bg-white/10 backdrop-blur-xl px-3 py-1 text-xs tracking-wide
                              hover:bg-white/12 transition"
                   aria-expanded={isOpen}
@@ -70,7 +64,7 @@ export default function AreaGroupsList({
                       <AreaItemCard
                         key={a.id}
                         area={a}
-                        color={stageMeta[a.stage]?.color}
+                        color={group.color}
                         onClick={() => onSelectArea(a)}
                         days={daysAgo(a)}
                         isActive={workingArea?.id === a.id}

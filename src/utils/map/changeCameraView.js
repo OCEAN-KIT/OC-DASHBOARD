@@ -6,12 +6,16 @@
  * @param {number} [newLocation.zoom] - 선택적 커스텀 줌 레벨
  */
 export default function changeCameraView(map, newLocation) {
-  if (!map || !newLocation?.center) return;
+  const center =
+    newLocation?.center ??
+    (newLocation?.lon != null && newLocation?.lat != null
+      ? [newLocation.lon, newLocation.lat]
+      : null);
+  if (!map || !center) return;
 
-  // 중심 좌표
-  const [lng, lat] = newLocation.center;
+  const [lng, lat] = center;
 
-  const isArea = newLocation.id?.includes("-");
+  const isArea = typeof newLocation.id === "number";
   const zoom = newLocation.zoom ?? (isArea ? 12.5 : 10.3);
 
   // 애니메이션 효과

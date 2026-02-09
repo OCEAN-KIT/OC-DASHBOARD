@@ -23,13 +23,11 @@ export default function AreaItemCard({
               className="inline-block h-2 w-2 rounded-full"
               style={{ backgroundColor: color ?? "rgba(255,255,255,.6)" }}
             />
-            <span className="text-[13px]">{area.label}</span>
-            <span className="text-[11px] text-white/60">
-              {area.habitat} · {area.depth}m
-            </span>
+            <span className="text-[13px]">{area.name}</span>
           </div>
           <div className="text-xs text-white/60">
-            {days === null ? "-" : `업데이트 ${days}일 전`}
+            복원 시작일: {area.startDate[0]}년 {area.startDate[1]}월{" "}
+            {area.startDate[2]}일
           </div>
         </div>
       </button>
