@@ -2,30 +2,47 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AREA_DETAILS } from "@/constants/areaDetails";
 import Header from "./header";
 import TabsBar from "./tabs";
 import OverviewTab from "./tabs/overview-tab";
 import TransplantTab from "./tabs/transplant-tab";
 import GrowthTab from "./tabs/growth-tab";
-import BiodiversityTab from "./tabs/bio-diversity-tab";
+// import BiodiversityTab from "./tabs/bio-diversity-tab";
 import WaterTab from "./tabs/water-tab";
 import MediaTab from "./tabs/media-tab";
+import { useAreaDetails } from "@/hooks/useAreas";
 
-export default function DetailInfoModal({ areaId }) {
+type Props = {
+  areaId: number;
+};
+
+export default function DetailInfoModal({ areaId }: Props) {
   const router = useRouter();
   const [tab, setTab] = useState("overview");
   const [frame, setFrame] = useState(0);
 
-  const data = AREA_DETAILS[areaId] ?? null;
+  const { data: area, isLoading, isError } = useAreaDetails(areaId);
 
   useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && router.back();
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && router.back();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [router]);
 
-  if (!data) {
+  if (isLoading) {
+    return (
+      <div
+        aria-modal
+        role="dialog"
+        className="fixed inset-0 z-100 flex items-center justify-center"
+      >
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" />
+        <div className="relative z-10 text-white text-sm">로딩 중...</div>
+      </div>
+    );
+  }
+
+  if (isError || !area) {
     return (
       <div
         aria-modal
@@ -61,26 +78,22 @@ export default function DetailInfoModal({ areaId }) {
       />
 
       <div className="relative z-10 w-[980px] max-w-[92vw] rounded-2xl border border-white/15 bg-white/10 text-white backdrop-blur-xl shadow-2xl animate-popIn">
-        <Header
-          areaId={areaId}
-          basic={data.basic}
-          onClose={() => router.back()}
-        />
+        <Header overview={area.overview} onClose={() => router.back()} />
 
         <div className="h-px w-full bg-white/10" />
         <TabsBar active={tab} onChange={setTab} />
         <div className="h-px w-full bg-white/10" />
 
-        <div className="p-5 space-y-4">
-          {tab === "overview" && <OverviewTab data={data} />}
-          {tab === "transplant" && <TransplantTab data={data} />}
-          {tab === "growth" && <GrowthTab data={data} />}
-          {tab === "biodiversity" && <BiodiversityTab data={data} />}
-          {tab === "water" && <WaterTab data={data} />}
+        {/* <div className="p-5 space-y-4">
+          {tab === "overview" && <OverviewTab data={area} />}
+          {tab === "transplant" && <TransplantTab data={area} />}
+          {tab === "growth" && <GrowthTab data={area} />}
+          {tab === "biodiversity" && <BiodiversityTab data={area} />}
+          {tab === "water" && <WaterTab data={area} />}
           {tab === "media" && (
-            <MediaTab media={data.media} frame={frame} setFrame={setFrame} />
+            <MediaTab media={area.photos} frame={frame} setFrame={setFrame} />
           )}
-        </div>
+        </div> */}
       </div>
 
       <style jsx global>{`

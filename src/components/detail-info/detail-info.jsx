@@ -6,17 +6,12 @@ import TransplantTab from "./tabs/transplant-tab";
 import GrowthTab from "./tabs/growth-tab";
 import BiodiversityTab from "./tabs/bio-diversity-tab";
 import WaterTab from "./tabs/water-tab";
+import { useAreaDetails } from "@/hooks/useAreas";
 
 export default function DetailInfo({ areaId }) {
-  const data = AREA_DETAILS[areaId] ?? null;
+  const { area, isLoading, isError } = useAreaDetails(areaId);
 
-  const headerInfo = useMemo(() => {
-    const b = data?.basic;
-    if (!b) return "데이터 없음";
-    return `복원 시작일 ${b.startDate} · ${b.habitat} · ${b.depth}m · 면적 ${b.areaSize}`;
-  }, [data]);
-
-  if (!data) {
+  if (!isError) {
     return (
       <div className="min-h-screen bg-transparent text-white flex items-center justify-center">
         <div className="rounded-xl border border-white/15 bg-white/10 px-6 py-5 backdrop-blur-md">
@@ -62,28 +57,28 @@ export default function DetailInfo({ areaId }) {
         <section>
           <h2 className="mb-3 text-lg font-semibold">이식 해조류</h2>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <TransplantTab data={data} />
+            <TransplantTab data={area} />
           </div>
         </section>
 
         <section>
           <h2 className="mb-3 text-lg font-semibold">성장</h2>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <GrowthTab data={data} />
+            <GrowthTab data={area} />
           </div>
         </section>
 
         <section>
           <h2 className="mb-3 text-lg font-semibold">생물다양성</h2>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <BiodiversityTab data={data} />
+            <BiodiversityTab data={area} />
           </div>
         </section>
 
         <section>
           <h2 className="mb-3 text-lg font-semibold">수질</h2>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <WaterTab data={data} />
+            <WaterTab data={area} />
           </div>
         </section>
 

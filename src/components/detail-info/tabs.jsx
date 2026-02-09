@@ -1,10 +1,9 @@
 export const TABS = [
   { key: "overview", label: "개요" },
-  { key: "transplant", label: "이식 해조류" },
-  { key: "growth", label: "성장" },
-  { key: "biodiversity", label: "생물다양성" },
-  { key: "water", label: "수질" },
-  { key: "media", label: "미디어" },
+  { key: "status", label: "현황" },
+  { key: "ecology", label: "생태 반응" },
+  { key: "enviroment", label: "환경" },
+  { key: "photos", label: "사진" },
 ];
 
 export default function TabsBar({ active, onChange }) {

@@ -20,8 +20,6 @@ export default function MapView() {
 
   const { data: areas = [], isLoading } = useAreas(currentLocation?.id ?? null);
 
-  console.log(areas);
-
   // 지역 선택 시 카메라 이동
   useEffect(() => {
     if (mapRef.current && currentLocation) {
@@ -112,14 +110,6 @@ export default function MapView() {
       }
     };
   }, []);
-
-  // 선택 상태 콘솔 확인용
-  useEffect(() => {
-    if (currentLocation)
-      console.log("현재 지역:", currentLocation.label ?? currentLocation.id);
-    if (workingArea)
-      console.log("작업 영역:", workingArea.label ?? workingArea.id);
-  }, [currentLocation, workingArea]);
 
   return (
     <div style={{ position: "absolute", inset: 0 }}>
