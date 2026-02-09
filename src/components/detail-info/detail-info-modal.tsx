@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "./header";
-import TabsBar from "./tabs";
+import TabsBar, { type TabKey } from "./tabs";
 import OverviewTab from "./tabs/overview-tab";
 import TransplantTab from "./tabs/transplant-tab";
 import GrowthTab from "./tabs/growth-tab";
@@ -18,7 +18,7 @@ type Props = {
 
 export default function DetailInfoModal({ areaId }: Props) {
   const router = useRouter();
-  const [tab, setTab] = useState("overview");
+  const [tab, setTab] = useState<TabKey>("overview");
   const [frame, setFrame] = useState(0);
 
   const { data: area, isLoading, isError } = useAreaDetails(areaId);
@@ -82,18 +82,17 @@ export default function DetailInfoModal({ areaId }: Props) {
 
         <div className="h-px w-full bg-white/10" />
         <TabsBar active={tab} onChange={setTab} />
-        <div className="h-px w-full bg-white/10" />
 
-        {/* <div className="p-5 space-y-4">
+        <div className="p-5 space-y-2">
           {tab === "overview" && <OverviewTab data={area} />}
-          {tab === "transplant" && <TransplantTab data={area} />}
+          {/* {tab === "transplant" && <TransplantTab data={area} />}
           {tab === "growth" && <GrowthTab data={area} />}
           {tab === "biodiversity" && <BiodiversityTab data={area} />}
           {tab === "water" && <WaterTab data={area} />}
           {tab === "media" && (
             <MediaTab media={area.photos} frame={frame} setFrame={setFrame} />
-          )}
-        </div> */}
+          )} */}
+        </div>
       </div>
 
       <style jsx global>{`
