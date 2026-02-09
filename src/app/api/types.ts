@@ -47,8 +47,8 @@ export type AreaDetails = {
     name: string;
     areaId: number;
     restorationRegion: string;
-    startDate: string;
-    endDate: string;
+    startDate: number[];
+    endDate: string | null;
     currentStatus: {
       name: string;
       description: string;
@@ -72,7 +72,7 @@ export type AreaDetails = {
     accumulated: {
       totalAreaSize: number;
       totalWorkCount: number;
-      lastWorkDate: string;
+      lastWorkDate: number[] | null;
     };
     workHistoryChart: ChartData;
   };

@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation";
 import Header from "./header";
 import TabsBar, { type TabKey } from "./tabs";
 import OverviewTab from "./tabs/overview-tab";
-import TransplantTab from "./tabs/transplant-tab";
-import GrowthTab from "./tabs/growth-tab";
+import StatusTab from "./tabs/status-tab";
+// import TransplantTab from "./tabs/transplant-tab";
+// import GrowthTab from "./tabs/growth-tab";
 // import BiodiversityTab from "./tabs/bio-diversity-tab";
-import WaterTab from "./tabs/water-tab";
-import MediaTab from "./tabs/media-tab";
+// import WaterTab from "./tabs/water-tab";
+// import MediaTab from "./tabs/media-tab";
 import { useAreaDetails } from "@/hooks/useAreas";
 
 type Props = {
@@ -85,13 +86,10 @@ export default function DetailInfoModal({ areaId }: Props) {
 
         <div className="p-5 space-y-2">
           {tab === "overview" && <OverviewTab data={area} />}
-          {/* {tab === "transplant" && <TransplantTab data={area} />}
-          {tab === "growth" && <GrowthTab data={area} />}
-          {tab === "biodiversity" && <BiodiversityTab data={area} />}
-          {tab === "water" && <WaterTab data={area} />}
-          {tab === "media" && (
-            <MediaTab media={area.photos} frame={frame} setFrame={setFrame} />
-          )} */}
+          {tab === "status" && <StatusTab data={area} />}
+          {/* {tab === "ecology" && <EcologyTab data={area} />}
+          {tab === "environment" && <EnvironmentTab data={area} />}
+          {tab === "photos" && <PhotosTab data={area} />} */}
         </div>
       </div>
 
