@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Header from "./header";
 import OverviewTab from "./tabs/overview-tab";
 import StatusTab from "./tabs/status-tab";
@@ -28,12 +29,12 @@ export default function DetailInfo({ areaId }: Props) {
       <div className="min-h-screen bg-transparent text-white flex items-center justify-center">
         <div className="rounded-xl border border-white/15 bg-white/10 px-6 py-5 backdrop-blur-md">
           <div className="text-sm">데이터가 없습니다. (ID: {areaId})</div>
-          <a
+          <Link
             href="/"
             className="mt-4 inline-flex items-center rounded-md border border-white/10 bg-white/10 px-3 py-2 text-sm hover:bg-white/15"
           >
             지도 보기로 돌아가기
-          </a>
+          </Link>
         </div>
       </div>
     );

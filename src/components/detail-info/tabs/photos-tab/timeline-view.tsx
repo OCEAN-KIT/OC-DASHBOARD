@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { keyToPublicUrl } from "@/utils/s3";
 
 type TimelineItem = {
@@ -35,10 +36,12 @@ export default function TimelineView({ items }: Props) {
           {/* 메인 이미지 */}
           <div className="relative w-full max-w-[520px] aspect-[4/3] mx-auto rounded-lg overflow-hidden bg-white/5">
             {active?.url ? (
-              <img
+              <Image
                 src={keyToPublicUrl(active.url)}
                 alt={active.caption}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 90vw, 520px"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-[11px] text-white/30">
@@ -86,15 +89,17 @@ export default function TimelineView({ items }: Props) {
                 >
                   <div
                     className={[
-                      "w-10 h-7 rounded overflow-hidden bg-white/5",
+                      "relative w-10 h-7 rounded overflow-hidden bg-white/5",
                       i === activeIdx ? "ring-1 ring-white/40" : "",
                     ].join(" ")}
                   >
                     {item.url ? (
-                      <img
+                      <Image
                         src={keyToPublicUrl(item.url)}
                         alt={item.label}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="40px"
                       />
                     ) : (
                       <div className="w-full h-full" />

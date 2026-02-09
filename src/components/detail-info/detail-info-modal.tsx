@@ -18,7 +18,6 @@ type Props = {
 export default function DetailInfoModal({ areaId }: Props) {
   const router = useRouter();
   const [tab, setTab] = useState<TabKey>("overview");
-  const [frame, setFrame] = useState(0);
 
   const { data: area, isLoading, isError } = useAreaDetails(areaId);
 

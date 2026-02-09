@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { keyToPublicUrl } from "@/utils/s3";
 
 type Props = {
@@ -33,10 +34,12 @@ function PhotoSlot({ url, label }: { url: string; label: string }) {
   return (
     <div className="relative rounded-lg overflow-hidden bg-black/80 flex items-center justify-center aspect-[4/3]">
       {url ? (
-        <img
+        <Image
           src={keyToPublicUrl(url)}
           alt={label}
-          className="w-full h-full object-contain"
+          fill
+          className="object-contain"
+          sizes="(max-width: 768px) 50vw, 450px"
         />
       ) : (
         <span className="text-[11px] text-white/30">사진 없음</span>
