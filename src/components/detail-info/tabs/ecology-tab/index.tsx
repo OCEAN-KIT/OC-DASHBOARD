@@ -19,7 +19,7 @@ export default function EcologyTab({ data }: Props) {
 
       {/* 1행 2열: 생존 상태 */}
       <div className="col-span-3 h-[220px]">
-        <SurvivalStatusCard status={ecology.survivalStatus} />
+        <SurvivalStatusCard status={ecology.areaAttachmentStatus} />
       </div>
 
       {/* 2행: 대표 개체 성장 추이 */}

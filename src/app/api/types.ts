@@ -48,7 +48,7 @@ export type AreaDetails = {
     areaId: number;
     restorationRegion: string;
     startDate: number[];
-    endDate: string | null;
+    endDate: number[] | null;
     currentStatus: {
       name: string;
       description: string;
@@ -81,7 +81,7 @@ export type AreaDetails = {
       method: string;
       status: string;
     }[];
-    survivalStatus: string;
+    areaAttachmentStatus: string;
     representativeGrowthChart: ChartData;
   };
   environment: {

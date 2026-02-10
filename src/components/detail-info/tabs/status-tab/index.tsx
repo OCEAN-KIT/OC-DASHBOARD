@@ -50,7 +50,7 @@ export default function StatusTab({ data }: Props) {
             if (!ymd || ymd.length < 3 || !ymd[0] || !ymd[1] || !ymd[2])
               return "-";
             return (
-              <span className="text-xl text-right leading-tight block">
+              <span className="text-2xl text-right leading-tight block">
                 {ymd[0]}년<br />
                 {ymd[1]}월 {ymd[2]}일
               </span>

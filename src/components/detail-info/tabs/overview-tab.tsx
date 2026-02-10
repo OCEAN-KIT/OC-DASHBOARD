@@ -1,17 +1,6 @@
 import type { AreaDetails } from "@/app/api/types";
-import {
-  STAGE_META,
-  STAGE_ORDER,
-  type StageName,
-} from "@/constants/stageMeta";
-import {
-  MapPin,
-  Ruler,
-  Waves,
-  Shell,
-  Calendar,
-  Activity,
-} from "lucide-react";
+import { STAGE_META, STAGE_ORDER, type StageName } from "@/constants/stageMeta";
+import { MapPin, Ruler, Waves, Shell, Calendar, Activity } from "lucide-react";
 
 type Props = {
   data: AreaDetails;
@@ -29,9 +18,13 @@ function Card({
 }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl border border-white/10 bg-white/6 p-5 transition-colors hover:bg-white/9 ${className}`}
+      className={`relative rounded-2xl border border-white/10 bg-white/6 p-5 transition-colors hover:bg-white/9 ${className}`}
     >
-      {deco}
+      {deco && (
+        <div className="absolute inset-0 overflow-hidden rounded-2xl">
+          {deco}
+        </div>
+      )}
       <div className="relative z-[1]">{children}</div>
     </div>
   );
@@ -40,9 +33,11 @@ function Card({
 function CardLabel({
   icon: Icon,
   label,
+  suffix,
 }: {
   icon: React.ElementType;
   label: string;
+  suffix?: React.ReactNode;
 }) {
   return (
     <div className="flex items-center gap-1.5 mb-3">
@@ -50,7 +45,38 @@ function CardLabel({
       <span className="text-[11px] font-medium text-white/35 uppercase tracking-wider">
         {label}
       </span>
+      {suffix}
     </div>
+  );
+}
+
+function StageTooltip() {
+  return (
+    <span className="relative group inline-flex ml-1">
+      <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-white/20 text-[10px] text-white/50 cursor-help">
+        ?
+      </span>
+
+      <span className="pointer-events-none absolute bottom-full left-0 mb-2 w-56 rounded-lg border border-white/15 bg-black/80 backdrop-blur-md p-2.5 text-xs opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 z-50">
+        <ul className="space-y-1.5">
+          {STAGE_ORDER.map((stage) => {
+            const meta = STAGE_META[stage];
+            return (
+              <li key={stage} className="flex items-start gap-1.5">
+                <span
+                  className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: meta.color }}
+                />
+                <span>
+                  <span className="font-medium text-white/90">{stage}</span>
+                  <span className="text-white/50">: {meta.description}</span>
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </span>
+    </span>
   );
 }
 
@@ -241,14 +267,16 @@ function StageStepper({ current }: { current: string }) {
 export default function OverviewTab({ data }: Props) {
   const { overview } = data;
 
-  const startStr = `${overview.startDate[0]}.${overview.startDate[1]}.${overview.startDate[2]}`;
-  const endStr = overview.endDate ?? "진행 중";
+  const startStr = `${overview.startDate[0]}년 ${overview.startDate[1]}월 ${overview.startDate[2]}일`;
+  const endStr = overview.endDate
+    ? `${overview.endDate[0]}년 ${overview.endDate[1]}월 ${overview.endDate[2]}일`
+    : "진행 중";
 
   return (
     <section className="grid grid-cols-3 gap-3">
       {/* ─ 현재 단계 (2col) ─ */}
       <Card className="col-span-2">
-        <CardLabel icon={Activity} label="현재 단계" />
+        <CardLabel icon={Activity} label="현재 단계" suffix={<StageTooltip />} />
         <p className="text-xl font-semibold">
           {overview.currentStatus.name}
           <span className="ml-2 text-sm font-normal text-white/40">
