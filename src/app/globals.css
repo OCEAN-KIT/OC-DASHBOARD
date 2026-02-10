@@ -149,19 +149,11 @@ body {
 }
 
 .oc-marker--special .oc-marker__stem {
-  width: 18px;
-  height: 18px;
-  bottom: 10px;
-  border-radius: 6px 6px 14px 6px;
-}
-
-.oc-marker--special::before {
-  content: "";
-  position: absolute;
-  width: 12px;
+  width: 20px;
   height: 36px;
-  border-radius: 6px;
-  background: linear-gradient(180deg, #0f3b4a, #06161d);
+  bottom: 4px;
+  border-radius: 8px;
+  transform: none;
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--marker-color) 80%, #06222c),
@@ -169,12 +161,7 @@ body {
   );
   box-shadow:
     0 12px 24px rgba(2, 12, 18, 0.65),
-    0 0 0 4px rgba(30, 82, 98, 0.35);
-  box-shadow:
-    0 12px 24px rgba(2, 12, 18, 0.65),
     0 0 0 4px color-mix(in srgb, var(--marker-color) 18%, transparent);
-  transform: translateY(18px);
-  z-index: 1;
 }
 
 .oc-marker--special::after {
