@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import AreaItemCard from "./areaItemCard";
 
@@ -15,6 +15,10 @@ export default function AreaGroupsList({
   const [expanded, setExpanded] = useState(() =>
     Object.fromEntries(grouped.map((g) => [g.stage, true])),
   );
+
+  useEffect(() => {
+    setExpanded(Object.fromEntries(grouped.map((g) => [g.stage, true])));
+  }, [grouped, activeRegion]);
 
   const toggle = (stage) => setExpanded((s) => ({ ...s, [stage]: !s[stage] }));
 

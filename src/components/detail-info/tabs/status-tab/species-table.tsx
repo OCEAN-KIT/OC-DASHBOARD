@@ -4,7 +4,7 @@ import styles from "./status-tab.module.css";
 
 function MethodTooltip() {
   return (
-    <span className="relative group inline-flex ml-1">
+    <span className="relative group inline-flex ml-2">
       <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-white/20 text-[10px] text-white/50 cursor-help">
         ?
       </span>

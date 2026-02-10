@@ -15,9 +15,9 @@ export default function Header({ overview, onClose }: Props) {
         <div>
           <div className="text-lg font-semibold">{overview.name}</div>
           <div className="text-xs text-white/70">
-            복원 시작일 {overview.startDate[0]}-{overview.startDate[1]}월-
-            {overview.startDate[2]}일 · {overview.habitatType} ·{" "}
-            {overview.avgDepth}m · 면적 {overview.areaSize}
+            복원 시작일 {overview.startDate[0]}-{overview.startDate[1]}-
+            {overview.startDate[2]} · {overview.habitatType} ·{" "}
+            {overview.avgDepth}m · 면적 {overview.areaSize} m<sup>2</sup>
           </div>
         </div>
       </div>

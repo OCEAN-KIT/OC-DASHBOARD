@@ -7,6 +7,7 @@ import { createRoot } from "react-dom/client";
 import RegionPopup from "./regionPopup";
 import { STAGE_META } from "@/constants/stageMeta";
 import { useRouter } from "next/navigation";
+import createMarkerElement from "@/utils/map/createMarkerElement";
 export default function RegionMarkers({
   mapRef,
   currentLocation,
@@ -52,16 +53,20 @@ export default function RegionMarkers({
         }).setDOMContent(popupNode);
         popups.push(popup);
 
-        const marker = new mapboxgl.Marker({
+        const markerEl = createMarkerElement({
           color: getMarkerColor(a),
-          scale: isSelected ? 1.6 : 0.9,
+          label: a?.name ?? "상세 보기",
+          selected: isSelected,
+        });
+
+        const marker = new mapboxgl.Marker({
+          element: markerEl,
         })
           .setLngLat([a.lon, a.lat])
           .setPopup(popup)
           .addTo(map);
 
         const el = marker.getElement();
-        el.setAttribute("data-tip", a?.name ?? "상세 보기");
 
         el.addEventListener("click", () => {
           setWorkingArea(a);

@@ -16,13 +16,14 @@ const ITEMS: { key: keyof Summary; label: string }[] = [
   { key: "wave", label: "파도" },
 ];
 
-const GRADE_META: Record<string, { bg: string; text: string; index: number }> = {
-  좋음: { bg: "bg-emerald-500/20", text: "text-emerald-400", index: 0 },
-  양호: { bg: "bg-emerald-500/20", text: "text-emerald-400", index: 0 },
-  보통: { bg: "bg-amber-500/20", text: "text-amber-400", index: 1 },
-  나쁨: { bg: "bg-red-500/20", text: "text-red-400", index: 2 },
-  미흡: { bg: "bg-red-500/20", text: "text-red-400", index: 2 },
-};
+const GRADE_META: Record<string, { bg: string; text: string; index: number }> =
+  {
+    좋음: { bg: "bg-emerald-500/20", text: "text-emerald-400", index: 0 },
+    양호: { bg: "bg-emerald-500/20", text: "text-emerald-400", index: 0 },
+    보통: { bg: "bg-amber-500/20", text: "text-amber-400", index: 1 },
+    나쁨: { bg: "bg-red-500/20", text: "text-red-400", index: 2 },
+    미흡: { bg: "bg-red-500/20", text: "text-red-400", index: 2 },
+  };
 
 const GRADES = ["좋음", "보통", "나쁨"] as const;
 
@@ -42,7 +43,7 @@ export default function EnvironmentSummaryCard({ summary }: Props) {
             key={key}
             className="rounded-xl bg-white/5 p-4 h-full flex flex-col"
           >
-            <h3 className="text-[11px] text-white/50 mb-1">{label}</h3>
+            <h3 className="text-[11px] text-white/50">{label}</h3>
             <p className="text-[10px] text-white/30 mb-3">최근 3개월 기준</p>
 
             {hasData && value ? (

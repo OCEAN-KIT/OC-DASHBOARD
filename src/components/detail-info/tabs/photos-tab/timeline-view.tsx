@@ -19,16 +19,15 @@ export default function TimelineView({ items }: Props) {
   const hasData = items.length > 0;
   const active = hasData ? items[activeIdx] : null;
 
-  const [y, m] = active?.label?.split(".") ?? ["", ""];
+  const [y, m, d] = active?.label?.split(".") ?? ["", "", ""];
 
   return (
     <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
-      <div className="relative flex items-center gap-3 mb-3">
-        <h3 className="text-[11px] text-white/50">타임라인</h3>
-
-        <span className="absolute left-1/2 -translate-x-1/2 text-[20px] font-semibold text-white  px-2.5 py-0.5">
-          {y}년 {m}월
-        </span>
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-[11px] text-white/50 -mt-3 ml-2">타임라인</h3>
+        <div className="rounded-full border border-white/15 bg-white/10 px-3.5 py-1 text-[13px] font-semibold text-white/90">
+          {y}년 {m}월{d ? ` ${d}일` : ""}
+        </div>
       </div>
 
       {hasData ? (

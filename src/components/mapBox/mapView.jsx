@@ -3,16 +3,18 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { COORDS } from "@/constants/regions";
+import { REGIONS, COORDS } from "@/constants/regions";
 import TopRightControls from "@/components/mapBox/topRightControls/topRightControls";
 import changeCameraView from "@/utils/map/changeCameraView";
 import RegionMarkers from "./regionMarkers";
 import Image from "next/image";
 import { useAreas } from "@/hooks/useAreas";
+import createMarkerElement from "@/utils/map/createMarkerElement";
 
 export default function MapView() {
   const mapRef = useRef(null);
   const containerRef = useRef(null);
+  const specialMarkerElsRef = useRef({});
 
   const [currentLocation, setCurrentLocation] = useState(null);
   const [workingArea, setWorkingArea] = useState(null);
@@ -20,10 +22,24 @@ export default function MapView() {
 
   const { data: areas = [], isLoading } = useAreas(currentLocation?.id ?? null);
 
+  // 마커 클릭 핸들러에서 최신 currentLocation 참조용
+  const currentLocationRef = useRef(null);
+  useEffect(() => {
+    currentLocationRef.current = currentLocation;
+  }, [currentLocation]);
+
   // 지역 선택 시 카메라 이동
   useEffect(() => {
     if (mapRef.current && currentLocation) {
       changeCameraView(mapRef.current, currentLocation);
+    }
+  }, [currentLocation]);
+
+  useEffect(() => {
+    const els = specialMarkerElsRef.current || {};
+    Object.values(els).forEach((el) => el.classList.remove("is-selected"));
+    if (currentLocation?.id && els[currentLocation.id]) {
+      els[currentLocation.id].classList.add("is-selected");
     }
   }, [currentLocation]);
 
@@ -58,7 +74,7 @@ export default function MapView() {
       projection: "globe",
       antialias: true,
       center: COORDS.POHANG,
-      zoom: 5,
+      zoom: 6,
     });
 
     mapRef.current = map;
@@ -73,12 +89,51 @@ export default function MapView() {
         COORDS.POHANG,
       ).extend(COORDS.ULJIN);
 
-      new mapboxgl.Marker({ color: "#ef4444" }).setLngLat(COORDS.POHANG).addTo(map);
-      new mapboxgl.Marker({ color: "#ef4444" }).setLngLat(COORDS.ULJIN).addTo(map);
+      const clearSpecialSelection = () => {
+        Object.values(specialMarkerElsRef.current).forEach((el) =>
+          el.classList.remove("is-selected"),
+        );
+      };
+
+      // 포항·울진 지역 마커 (클릭 시 우상단 지역 선택과 동일 동작)
+      REGIONS.forEach((region) => {
+        const markerEl = createMarkerElement({
+          color: region.color,
+          label: region.label,
+          variant: "special",
+        });
+
+        const marker = new mapboxgl.Marker({ element: markerEl })
+          .setLngLat(region.center)
+          .addTo(map);
+
+        const el = marker.getElement();
+        el.style.cursor = "pointer";
+        specialMarkerElsRef.current[region.id] = el;
+
+        el.addEventListener("click", () => {
+          if (currentLocationRef.current?.id === region.id) {
+            setCurrentLocation(null);
+            setWorkingArea(null);
+            clearSpecialSelection();
+            changeCameraView(map, {
+              center: [129.38, 36.5],
+              zoom: 6.5,
+              id: "overview",
+            });
+          } else {
+            setCurrentLocation(region);
+            setWorkingArea(null);
+            clearSpecialSelection();
+            el.classList.add("is-selected");
+          }
+        });
+      });
 
       map.fitBounds(bounds, {
-        padding: 80,
-        maxZoom: 12,
+        padding: 140,
+        maxZoom: 9,
+        offset: [0, -30],
         duration: 1200,
         pitch: 45,
         bearing: -15,
@@ -159,7 +214,7 @@ export default function MapView() {
 
       {/* 데이터 고지 문구 */}
       <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-1.5">
-        <p className="max-w-[720px] text-center text-[12px] leading-relaxed text-white/40">
+        <p className="max-w-[800px] text-center text-[14px] leading-relaxed text-white/40">
           본 대시보드의 모든 정보는 오션캠퍼스 현장 기록 시스템(OC RECORD)을
           통해 수중에서 직접 관측·기록된 데이터를 기반으로 구성되었습니다.
           <br />본 자료는 복원 활동의 경과와 변화를 장기간에 걸쳐 보여주기 위한
