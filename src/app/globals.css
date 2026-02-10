@@ -25,107 +25,236 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* 말풍선 기준을 잡기 위해 relative (지도 좌표엔 영향 X) */
-.mapboxgl-marker {
+/* Custom map markers */
+.oc-marker {
+  --marker-color: #40c7ff;
+  --marker-shadow: rgba(4, 18, 28, 0.45);
   position: relative;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
-/* 기본은 숨김 */
-.mapboxgl-marker::after,
-.mapboxgl-marker::before {
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 120ms ease,
-    transform 120ms ease;
-}
-
-/* 본체 말풍선 */
-.mapboxgl-marker::after {
-  content: "";
+.oc-marker__halo {
   position: absolute;
-  top: 50%;
-  left: 40px;
-  transform: translateY(-50%) translateX(0);
-  padding: 6px 10px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.3);
-  color: #111;
-  font-size: 15px;
-  line-height: 1;
-  white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  inset: 2px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--marker-color) 45%, transparent) 0%,
+      color-mix(in srgb, var(--marker-color) 8%, transparent) 55%,
+      transparent 70%
+    );
+  filter: blur(0.2px);
+  animation: markerPulse 2.6s ease-in-out infinite;
 }
 
-/* 꼬리 */
-
-/* 호버할 때만 텍스트가 주입되어 나타남 */
-.mapboxgl-marker:hover::after {
-  content: attr(data-tip);
-  opacity: 1;
-  transform: translateY(-50%) translateX(4px);
-}
-.mapboxgl-marker:hover::before {
-  opacity: 1;
-}
-
-/* 선택 마커(크게 보이는 애)는 말풍선 간격 살짝 보정 (선택사항) */
-.mapboxgl-marker[style*="scale(1.6)"]::after,
-.mapboxgl-marker[style*="scale(1.6)"]::before {
-  left: 22px;
-}
-
-/* 마커 호버 라벨 */
-.mapboxgl-marker {
+.oc-marker__core {
   position: relative;
-}
-.mapboxgl-marker::after,
-.mapboxgl-marker::before {
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 0.12s,
-    transform 0.12s;
-}
-.mapboxgl-marker::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 18px;
-  transform: translateY(-50%);
-  padding: 6px 10px;
+  width: 16px;
+  height: 16px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background: radial-gradient(
+    circle at 30% 30%,
+    #ffffff,
+    color-mix(in srgb, var(--marker-color) 70%, #083344) 60%
+  );
+  border: 2px solid color-mix(in srgb, var(--marker-color) 80%, #06131a);
+  box-shadow:
+    0 6px 12px var(--marker-shadow),
+    0 0 0 4px color-mix(in srgb, var(--marker-color) 18%, transparent);
+  z-index: 2;
+}
+
+.oc-marker__stem {
+  position: absolute;
+  bottom: 8px;
+  width: 12px;
+  height: 12px;
+  background: color-mix(in srgb, var(--marker-color) 85%, #06222f);
+  border-radius: 2px 2px 10px 2px;
+  transform: rotate(45deg);
+  box-shadow: 0 4px 10px var(--marker-shadow);
+  z-index: 1;
+}
+
+.oc-marker__label {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  transform: translate(-50%, -100%) scale(0.96);
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: rgba(7, 15, 24, 0.72);
+  color: #e5f7ff;
   font-size: 12px;
-  white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-}
-.mapboxgl-marker::before {
-  display: none !important;
-}
-
-.mapboxgl-marker:hover::after {
-  content: attr(data-tip);
-  opacity: 1;
-  transform: translateY(-50%) translateX(-110px);
-}
-.mapboxgl-marker:hover::before {
-  opacity: 1;
-}
-
-/* 포항·울진 지역 마커 호버 라벨 (크게) */
-.region-marker:hover::after {
-  content: attr(data-tip);
-  opacity: 1;
-  font-size: 18px;
-  font-weight: 700;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transform: translateY(-160%) translateX(-35px);
+  font-weight: 600;
   letter-spacing: 0.02em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 10px 30px rgba(4, 12, 18, 0.45);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.oc-marker:hover .oc-marker__label {
+  opacity: 1;
+  transform: translate(-50%, -110%) scale(1);
+}
+
+.oc-marker.is-selected .oc-marker__core {
+  box-shadow:
+    0 10px 18px var(--marker-shadow),
+    0 0 0 6px color-mix(in srgb, var(--marker-color) 30%, transparent);
+}
+
+.oc-marker--special {
+  width: 70px;
+  height: 86px;
+}
+
+.oc-marker--special .oc-marker__halo {
+  inset: -8px -6px 8px;
+  border-radius: 50% 50% 55% 55%;
+  animation-duration: 2.2s;
+}
+
+.oc-marker--special .oc-marker__core {
+  width: 26px;
+  height: 26px;
+  border-radius: 10px;
+  background: linear-gradient(
+    160deg,
+    #f8fdff,
+    color-mix(in srgb, var(--marker-color) 65%, #0a2a36) 60%
+  );
+  border: 3px solid color-mix(in srgb, var(--marker-color) 80%, #06222c);
+  box-shadow:
+    0 14px 26px rgba(2, 14, 20, 0.6),
+    0 0 0 10px color-mix(in srgb, var(--marker-color) 25%, transparent);
+  z-index: 2;
+}
+
+.oc-marker--special .oc-marker__stem {
+  width: 18px;
+  height: 18px;
+  bottom: 10px;
+  border-radius: 6px 6px 14px 6px;
+}
+
+.oc-marker--special::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 36px;
+  border-radius: 6px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--marker-color) 80%, #06222c),
+    color-mix(in srgb, var(--marker-color) 35%, #04141d)
+  );
+  box-shadow:
+    0 12px 24px rgba(2, 12, 18, 0.65),
+    0 0 0 4px color-mix(in srgb, var(--marker-color) 18%, transparent);
+  transform: translateY(18px);
+  z-index: 1;
+}
+
+.oc-marker--special::after {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 20px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--marker-color) 60%, #ffffff) 35%,
+    color-mix(in srgb, var(--marker-color) 35%, transparent) 70%,
+    transparent 100%
+  );
+  opacity: 0.65;
+  filter: blur(0.2px);
+  animation: lighthouseSweep 2.6s ease-in-out infinite;
+  z-index: 0;
+}
+
+.oc-marker--special .oc-marker__label {
+  font-size: 14px;
+  padding: 8px 16px;
+  background: rgba(6, 15, 24, 0.86);
+  top: auto;
+  bottom: -12px;
+  transform: translate(-50%, 100%) scale(1);
+  opacity: 1;
+  transition: none;
+  box-shadow:
+    0 12px 30px rgba(3, 12, 18, 0.5),
+    0 0 0 1px color-mix(in srgb, var(--marker-color) 25%, transparent);
+}
+
+.oc-marker--special:hover .oc-marker__label {
+  transform: translate(-50%, 100%) scale(1);
+  opacity: 1;
+}
+
+.oc-marker--special:hover .oc-marker__core {
+  animation: lighthouseBounce 420ms ease;
+}
+
+.oc-marker--special.is-selected::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 230, 138, 0.95) 35%,
+    rgba(255, 214, 94, 0.65) 70%,
+    transparent 100%
+  );
+  opacity: 0.85;
+}
+
+@keyframes markerPulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+@keyframes lighthouseSweep {
+  0%,
+  100% {
+    transform: rotate(-18deg) scaleX(0.9);
+    opacity: 0.35;
+  }
+  50% {
+    transform: rotate(18deg) scaleX(1.05);
+    opacity: 0.85;
+  }
+}
+
+@keyframes lighthouseBounce {
+  0% {
+    transform: translateY(0);
+  }
+  45% {
+    transform: translateY(-6px) scale(1.04);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 /* 말풍선 꼬다리(arrow) 제거 */
