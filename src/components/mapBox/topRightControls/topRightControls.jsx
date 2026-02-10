@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect, useCallback } from "react";
 import changeCameraView from "@/utils/map/changeCameraView";
 import ControlsHeader from "./controlsHeader";
 import RegionSelector from "./regionSelector";
@@ -14,14 +14,6 @@ import BottomSheet, {
   SNAP_HALF,
 } from "@/components/ui/BottomSheet";
 import { Search } from "lucide-react";
-
-function daysAgo(area) {
-  const iso = area.updatedAt ?? area.startDate;
-  if (!iso) return null;
-  const t = Date.parse(iso);
-  if (Number.isNaN(t)) return null;
-  return Math.max(0, Math.floor((Date.now() - t) / 86400000));
-}
 
 export default function TopRightControls({
   currentLocation,
@@ -37,7 +29,24 @@ export default function TopRightControls({
   const [open, setOpen] = useState(true);
   const [query, setQuery] = useState("");
   const [mobileSnap, setMobileSnap] = useState(SNAP_PEEK);
+  const [now, setNow] = useState(null);
   const searchRef = useRef(null);
+
+  useEffect(() => {
+    setNow(Date.now());
+  }, []);
+
+  const daysAgo = useCallback(
+    (area) => {
+      if (!now) return null;
+      const iso = area.updatedAt ?? area.startDate;
+      if (!iso) return null;
+      const t = Date.parse(iso);
+      if (Number.isNaN(t)) return null;
+      return Math.max(0, Math.floor((now - t) / 86400000));
+    },
+    [now],
+  );
 
   const resetView = () => {
     if (!mapRef?.current) return;

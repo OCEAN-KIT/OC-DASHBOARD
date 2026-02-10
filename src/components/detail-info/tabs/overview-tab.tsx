@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import type { AreaDetails } from "@/app/api/types";
 import { STAGE_META, STAGE_ORDER, type StageName } from "@/constants/stageMeta";
 import { MapPin, Ruler, Waves, Shell, Calendar, Activity } from "lucide-react";
@@ -51,13 +52,43 @@ function CardLabel({
 }
 
 function StageTooltip() {
-  return (
-    <span className="relative group inline-flex ml-1">
-      <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-white/20 text-[10px] text-white/50 cursor-help">
-        ?
-      </span>
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLSpanElement>(null);
 
-      <span className="pointer-events-none absolute bottom-full left-0 mb-2 w-56 rounded-lg border border-white/15 bg-black/80 backdrop-blur-md p-2.5 text-xs opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 z-50">
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent | TouchEvent) => {
+      if (!rootRef.current) return;
+      const target = e.target as Node;
+      if (!rootRef.current.contains(target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("touchstart", onDoc, { passive: true });
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("touchstart", onDoc);
+    };
+  }, [open]);
+
+  return (
+    <span ref={rootRef} className="relative group inline-flex ml-1">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-white/20 text-[10px] text-white/50 cursor-help"
+        aria-label="현재 단계 도움말"
+      >
+        ?
+      </button>
+
+      <span
+        className={[
+          "pointer-events-none absolute bottom-full left-0 mb-2 w-56 rounded-lg border border-white/15 bg-black/80 backdrop-blur-md p-2.5 text-xs opacity-0 transition-opacity z-50",
+          "max-md:bottom-auto max-md:top-full max-md:mt-2 max-md:mb-0",
+          "group-hover:pointer-events-auto group-hover:opacity-100",
+          open ? "pointer-events-auto opacity-100" : "",
+        ].join(" ")}
+      >
         <ul className="space-y-1.5">
           {STAGE_ORDER.map((stage) => {
             const meta = STAGE_META[stage];
@@ -266,6 +297,7 @@ function StageStepper({ current }: { current: string }) {
 
 export default function OverviewTab({ data }: Props) {
   const { overview } = data;
+  const nf = new Intl.NumberFormat("ko-KR");
 
   const startStr = `${overview.startDate[0]}년 ${overview.startDate[1]}월 ${overview.startDate[2]}일`;
   const endStr = overview.endDate
@@ -273,9 +305,9 @@ export default function OverviewTab({ data }: Props) {
     : "진행 중";
 
   return (
-    <section className="grid grid-cols-3 gap-3">
+    <section className="grid grid-cols-3 gap-3 max-md:grid-cols-2">
       {/* ─ 현재 단계 (2col) ─ */}
-      <Card className="col-span-2">
+      <Card className="col-span-2 max-md:col-span-2">
         <CardLabel icon={Activity} label="현재 단계" suffix={<StageTooltip />} />
         <p className="text-xl font-semibold">
           {overview.currentStatus.name}
@@ -290,7 +322,7 @@ export default function OverviewTab({ data }: Props) {
       <Card deco={<GridDeco />}>
         <CardLabel icon={Ruler} label="면적" />
         <p className="text-2xl font-semibold tabular-nums">
-          {overview.areaSize.toLocaleString()}
+          {nf.format(overview.areaSize)}
           <span className="ml-1 text-sm font-normal text-white/40">
             m<sup>2</sup>
           </span>
@@ -319,7 +351,7 @@ export default function OverviewTab({ data }: Props) {
       </Card>
 
       {/* ─ 관측 기간 (3col) ─ */}
-      <Card className="col-span-3" deco={<TimelineDeco />}>
+      <Card className="col-span-3 max-md:col-span-2" deco={<TimelineDeco />}>
         <CardLabel icon={Calendar} label="관측 기간" />
         <div className="flex items-center gap-3">
           <span className="text-lg font-semibold tabular-nums">{startStr}</span>

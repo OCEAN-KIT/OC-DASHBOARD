@@ -71,22 +71,24 @@ export default function DetailInfoModal({ areaId }: Props) {
       className="fixed inset-0 z-100 flex items-center justify-center"
     >
       <div
-        className="absolute inset-0 bg-black/55 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/55 backdrop-blur-sm max-md:bg-black/25"
         onClick={() => router.back()}
       />
 
-      <div className="relative z-10 w-[980px] max-w-[92vw] rounded-2xl border border-white/15 bg-white/10 text-white backdrop-blur-xl shadow-2xl animate-popIn">
-        <Header overview={area.overview} onClose={() => router.back()} />
+      <div className="relative z-10 w-[980px] max-w-[92vw] rounded-2xl border border-white/15 bg-white/10 text-white backdrop-blur-xl shadow-2xl animate-popIn max-md:w-full max-md:h-full max-md:max-w-none max-md:rounded-none max-md:border-0 max-md:shadow-none max-md:bg-black/20">
+        <div className="max-md:flex max-md:flex-col max-md:h-full">
+          <Header overview={area.overview} onClose={() => router.back()} />
 
-        <div className="h-px w-full bg-white/10" />
-        <TabsBar active={tab} onChange={setTab} />
+          <div className="h-px w-full bg-white/10" />
+          <TabsBar active={tab} onChange={setTab} />
 
-        <div className="p-5 space-y-2">
-          {tab === "overview" && <OverviewTab data={area} />}
-          {tab === "status" && <StatusTab data={area} />}
-          {tab === "ecology" && <EcologyTab data={area} />}
-          {tab === "environment" && <EnvironmentTab data={area} />}
-          {tab === "photos" && <PhotosTab data={area} />}
+          <div className="p-5 space-y-2 max-md:px-4 max-md:pb-6 max-md:flex-1 max-md:overflow-y-auto">
+            {tab === "overview" && <OverviewTab data={area} />}
+            {tab === "status" && <StatusTab data={area} />}
+            {tab === "ecology" && <EcologyTab data={area} />}
+            {tab === "environment" && <EnvironmentTab data={area} />}
+            {tab === "photos" && <PhotosTab data={area} />}
+          </div>
         </div>
       </div>
 

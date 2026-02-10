@@ -52,6 +52,22 @@ export default function MapView() {
 
   // 지도 초기화 (정상 버전)
   useEffect(() => {
+    const setAppHeight = () => {
+      const h = window.visualViewport?.height ?? window.innerHeight;
+      document.documentElement.style.setProperty("--app-height", `${h}px`);
+    };
+    setAppHeight();
+    window.addEventListener("resize", setAppHeight);
+    window.visualViewport?.addEventListener("resize", setAppHeight);
+    window.visualViewport?.addEventListener("scroll", setAppHeight);
+    return () => {
+      window.removeEventListener("resize", setAppHeight);
+      window.visualViewport?.removeEventListener("resize", setAppHeight);
+      window.visualViewport?.removeEventListener("scroll", setAppHeight);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
@@ -167,7 +183,14 @@ export default function MapView() {
   }, []);
 
   return (
-    <div style={{ position: "absolute", inset: 0 }}>
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        width: "100vw",
+        height: "var(--app-height, 100dvh)",
+      }}
+    >
       <div
         ref={containerRef}
         id="map"
@@ -225,8 +248,7 @@ export default function MapView() {
         >
           본 대시보드의 모든 정보는 오션캠퍼스 현장 기록 시스템(OC RECORD)을
           통해 수중에서 직접 관측·기록된 데이터를 기반으로 구성되었습니다.
-          <br />
-          본 자료는 복원 활동의 경과와 변화를 장기간에 걸쳐 보여주기 위한
+          <br />본 자료는 복원 활동의 경과와 변화를 장기간에 걸쳐 보여주기 위한
           목적을 가집니다.
         </p>
       </div>

@@ -1,4 +1,4 @@
-import DetailInfo from "@/components/detail-info/detail-info";
+import DetailInfoModal from "@/components/detail-info/detail-info-modal";
 
 export default async function DetailInfoPage({
   params,
@@ -6,5 +6,5 @@ export default async function DetailInfoPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  return <DetailInfo areaId={Number(id)} />;
+  return <DetailInfoModal areaId={Number(id)} />;
 }

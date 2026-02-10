@@ -1,14 +1,9 @@
 "use client";
 
-import {
-  useRef,
-  useCallback,
-  useEffect,
-  type ReactNode,
-} from "react";
+import { useRef, useCallback, useEffect, type ReactNode } from "react";
 
 /* ── Snap points (viewport height %) ── */
-const SNAP_PEEK = 0.2;
+const SNAP_PEEK = 0.07;
 const SNAP_HALF = 0.5;
 const SNAP_FULL = 0.85;
 const SNAPS = [SNAP_PEEK, SNAP_HALF, SNAP_FULL];
@@ -25,10 +20,7 @@ export default function BottomSheet({ snap, onSnapChange, children }: Props) {
   const startY = useRef(0);
   const startH = useRef(0);
 
-  const snapToPx = useCallback(
-    (s: number) => window.innerHeight * s,
-    [],
-  );
+  const snapToPx = useCallback((s: number) => window.innerHeight * s, []);
 
   const nearest = useCallback((hPx: number) => {
     const ratio = hPx / window.innerHeight;
