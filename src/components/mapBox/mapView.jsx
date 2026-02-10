@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { COORDS } from "@/constants/regions";
+import { REGIONS, COORDS } from "@/constants/regions";
 import TopRightControls from "@/components/mapBox/topRightControls/topRightControls";
 import changeCameraView from "@/utils/map/changeCameraView";
 import RegionMarkers from "./regionMarkers";
@@ -19,6 +19,12 @@ export default function MapView() {
   const [activeStage, setActiveStage] = useState(null);
 
   const { data: areas = [], isLoading } = useAreas(currentLocation?.id ?? null);
+
+  // 마커 클릭 핸들러에서 최신 currentLocation 참조용
+  const currentLocationRef = useRef(null);
+  useEffect(() => {
+    currentLocationRef.current = currentLocation;
+  }, [currentLocation]);
 
   // 지역 선택 시 카메라 이동
   useEffect(() => {
@@ -73,8 +79,31 @@ export default function MapView() {
         COORDS.POHANG,
       ).extend(COORDS.ULJIN);
 
-      new mapboxgl.Marker({ color: "#ef4444" }).setLngLat(COORDS.POHANG).addTo(map);
-      new mapboxgl.Marker({ color: "#ef4444" }).setLngLat(COORDS.ULJIN).addTo(map);
+      // 포항·울진 지역 마커 (클릭 시 우상단 지역 선택과 동일 동작)
+      REGIONS.forEach((region) => {
+        const marker = new mapboxgl.Marker({ color: region.color })
+          .setLngLat(region.center)
+          .addTo(map);
+
+        const el = marker.getElement();
+        el.style.cursor = "pointer";
+        el.classList.add("region-marker");
+        el.setAttribute("data-tip", region.label);
+        el.addEventListener("click", () => {
+          if (currentLocationRef.current?.id === region.id) {
+            setCurrentLocation(null);
+            setWorkingArea(null);
+            changeCameraView(map, {
+              center: [129.38, 36.5],
+              zoom: 6.5,
+              id: "overview",
+            });
+          } else {
+            setCurrentLocation(region);
+            setWorkingArea(null);
+          }
+        });
+      });
 
       map.fitBounds(bounds, {
         padding: 80,

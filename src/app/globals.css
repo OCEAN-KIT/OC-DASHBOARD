@@ -35,7 +35,9 @@ body {
 .mapboxgl-marker::before {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 120ms ease, transform 120ms ease;
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
 }
 
 /* 본체 말풍선 */
@@ -81,7 +83,9 @@ body {
 .mapboxgl-marker::before {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.12s, transform 0.12s;
+  transition:
+    opacity 0.12s,
+    transform 0.12s;
 }
 .mapboxgl-marker::after {
   content: "";
@@ -108,6 +112,20 @@ body {
 }
 .mapboxgl-marker:hover::before {
   opacity: 1;
+}
+
+/* 포항·울진 지역 마커 호버 라벨 (크게) */
+.region-marker:hover::after {
+  content: attr(data-tip);
+  opacity: 1;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transform: translateY(-160%) translateX(-35px);
+  letter-spacing: 0.02em;
 }
 
 /* 말풍선 꼬다리(arrow) 제거 */
