@@ -180,7 +180,7 @@ export default function MapView() {
       />
 
       {/* 좌상단 (로고) Ocean Campus 라벨 */}
-      <div className="pointer-events-none fixed left-4 top-4 z-50 flex items-center gap-2 mx-1">
+      <div className="pointer-events-none fixed left-4 top-4 z-50 flex items-center gap-2 mx-1 max-md:hidden">
         <Image
           src="/oceanCampusLogo.png"
           alt="Ocean Campus"
@@ -213,11 +213,20 @@ export default function MapView() {
       />
 
       {/* 데이터 고지 문구 */}
-      <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-50 flex justify-center pb-1.5">
-        <p className="max-w-[800px] text-center text-[14px] leading-relaxed text-white/40">
+      <div
+        className="pointer-events-none fixed z-50 flex justify-center
+                   bottom-0 left-0 right-0 pb-1.5
+                   max-md:top-3 max-md:bottom-auto max-md:px-4 max-md:pb-0"
+      >
+        <p
+          className="max-w-[800px] text-center leading-relaxed text-white/40
+                     text-[14px]
+                     max-md:text-[10px] max-md:leading-snug"
+        >
           본 대시보드의 모든 정보는 오션캠퍼스 현장 기록 시스템(OC RECORD)을
           통해 수중에서 직접 관측·기록된 데이터를 기반으로 구성되었습니다.
-          <br />본 자료는 복원 활동의 경과와 변화를 장기간에 걸쳐 보여주기 위한
+          <br />
+          본 자료는 복원 활동의 경과와 변화를 장기간에 걸쳐 보여주기 위한
           목적을 가집니다.
         </p>
       </div>
