@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import changeCameraView from "@/utils/map/changeCameraView";
 import ControlsHeader from "./controlsHeader";
 import RegionSelector from "./regionSelector";
@@ -30,11 +31,22 @@ export default function TopRightControls({
   const [query, setQuery] = useState("");
   const [mobileSnap, setMobileSnap] = useState(SNAP_PEEK);
   const [now, setNow] = useState(null);
+  const router = useRouter();
   const searchRef = useRef(null);
 
   useEffect(() => {
     setNow(Date.now());
   }, []);
+
+  useEffect(() => {
+    if (!areas?.length) return;
+    areas.forEach((a) => {
+      if (a?.id == null) return;
+      try {
+        router.prefetch(`/detailInfo/${a.id}`);
+      } catch {}
+    });
+  }, [areas, router]);
 
   const daysAgo = useCallback(
     (area) => {
