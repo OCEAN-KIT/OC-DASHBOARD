@@ -17,7 +17,7 @@ export default function BeforeAfterCard({ beforeUrl, afterUrl }: Props) {
       </div>
 
       {hasData ? (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 max-md:grid-cols-1">
           <PhotoSlot url={beforeUrl} label="복원 전" />
           <PhotoSlot url={afterUrl} label="복원 후" />
         </div>
@@ -39,7 +39,7 @@ function PhotoSlot({ url, label }: { url: string; label: string }) {
           alt={label}
           fill
           className="object-contain"
-          sizes="(max-width: 768px) 50vw, 450px"
+          sizes="(max-width: 768px) 90vw, 450px"
         />
       ) : (
         <span className="text-[11px] text-white/30">사진 없음</span>

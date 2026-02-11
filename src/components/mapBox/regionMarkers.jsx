@@ -40,7 +40,9 @@ export default function RegionMarkers({
         popupRoot.render(
           <RegionPopup
             region={a}
-            onOpen={() => router.push(`/detailInfo/${a.id}`)}
+            onOpen={() => {
+              router.push(`/detailInfo/${a.id}`);
+            }}
           />,
         );
 

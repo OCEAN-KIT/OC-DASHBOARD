@@ -43,17 +43,11 @@ function getPopupStyle(stage) {
   return { text, bg, dot };
 }
 
-function formatDate(iso) {
-  if (!iso) return "-";
-  try {
-    const d = new Date(iso);
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${y}.${m}.${day}`;
-  } catch {
-    return iso;
-  }
+function formatDate(ymd) {
+  if (!Array.isArray(ymd)) return "-";
+  const [y, m, d] = ymd;
+  if (!y || !m || !d) return "-";
+  return `${y}년 ${m}월 ${d}일`;
 }
 
 export default function RegionPopup({ region, onOpen }) {
