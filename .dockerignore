@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+*.pem
+.env*
+certificates/
+server.js
+.DS_Store
+MOBILE_UI_SPEC.md
+README.md
+yarn.lock
+.coderabbit.yaml
+docker-compose*.yml
