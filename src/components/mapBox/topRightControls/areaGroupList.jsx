@@ -24,8 +24,13 @@ export default function AreaGroupsList({
 
   if (isLoading) {
     return (
-      <div className="px-3 py-8 text-center text-sm text-white/60">
-        불러오는 중...
+      <div className="px-3 py-6">
+        <div className="space-y-2">
+          <div className="h-9 animate-pulse rounded-lg bg-slate-800/70" />
+          <div className="h-9 animate-pulse rounded-lg bg-slate-800/70" />
+          <div className="h-9 animate-pulse rounded-lg bg-slate-800/70" />
+        </div>
+        <p className="mt-3 text-center text-sm text-slate-400">불러오는 중...</p>
       </div>
     );
   }
@@ -42,8 +47,8 @@ export default function AreaGroupsList({
                   type="button"
                   onClick={() => toggle(group.stage)}
                   className="sticky top-0 z-10 -mx-2 flex w-[calc(100%+16px)] items-center justify-between
-                             bg-white/10 backdrop-blur-xl px-3 py-1 text-xs tracking-wide
-                             hover:bg-white/12 transition"
+                             border-y border-slate-800/70 bg-slate-900/90 px-3 py-1.5 text-xs
+                             tracking-wide text-slate-200 hover:bg-slate-900 transition"
                   aria-expanded={isOpen}
                 >
                   <div className="flex items-center gap-2">
@@ -53,7 +58,7 @@ export default function AreaGroupsList({
                     />
                     {group.stage} ({group.items.length})
                   </div>
-                  <span className="text-white/80">
+                  <span className="text-slate-400">
                     {isOpen ? (
                       <ChevronUp size={16} />
                     ) : (
@@ -80,12 +85,12 @@ export default function AreaGroupsList({
             );
           })
         ) : (
-          <div className="px-3 py-8 text-center text-sm text-white/60">
+          <div className="px-3 py-8 text-center text-sm text-slate-400">
             조건에 맞는 작업영역이 없습니다
           </div>
         )
       ) : (
-        <div className="px-3 py-8 text-center text-sm text-white/60">
+        <div className="px-3 py-8 text-center text-sm text-slate-400">
           지역을 먼저 선택하세요
         </div>
       )}

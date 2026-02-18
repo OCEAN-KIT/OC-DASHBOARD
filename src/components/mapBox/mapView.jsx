@@ -203,15 +203,27 @@ export default function MapView() {
       />
 
       {/* 좌상단 (로고) Ocean Campus 라벨 */}
-      <div className="pointer-events-none fixed left-4 top-4 z-50 flex items-center gap-2 mx-1 max-md:hidden">
-        <Image
-          src="/oceanCampusLogo.png"
-          alt="Ocean Campus"
-          width={80}
-          height={80}
-          className="h-10 w-10 object-contain"
-          priority
-        />
+      <div className="pointer-events-none fixed left-4 top-4 z-40 hidden md:block">
+        <div className="oc-panel rounded-2xl px-3 py-2">
+          <div className="flex items-center gap-2">
+            <Image
+              src="/oceanCampusLogo.png"
+              alt="Ocean Campus"
+              width={80}
+              height={80}
+              className="h-10 w-10 object-contain"
+              priority
+            />
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-slate-400">
+                OC Record
+              </p>
+              <h1 className="text-sm font-semibold tracking-tight text-slate-50">
+                해양 생태 복원 현황
+              </h1>
+            </div>
+          </div>
+        </div>
       </div>
 
       <RegionMarkers
@@ -238,12 +250,12 @@ export default function MapView() {
       {/* 데이터 고지 문구 */}
       <div
         className="pointer-events-none fixed z-50 flex justify-center
-                   bottom-0 left-0 right-0 pb-1.5
-                   max-md:top-3 max-md:bottom-auto max-md:px-4 max-md:pb-0"
+                   bottom-3 left-0 right-0 px-4
+                   max-md:top-3 max-md:bottom-auto"
       >
         <p
-          className="max-w-[800px] text-center leading-relaxed text-white/40
-                     text-[14px]
+          className="oc-panel max-w-[860px] rounded-xl border border-slate-800/80 px-4 py-2
+                     text-center text-[12px] leading-relaxed text-slate-300
                      max-md:text-[10px] max-md:leading-snug"
         >
           본 대시보드의 모든 정보는 오션캠퍼스 현장 기록 시스템(OC RECORD)을
