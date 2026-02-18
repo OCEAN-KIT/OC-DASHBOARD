@@ -13,7 +13,7 @@ export default function TemperatureChart({ chart }: Props) {
   const labels = chart.labels.slice(-MAX_MONTHS);
   const hasData = values.length > 0;
   return (
-    <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
+    <div className="oc-detail-card rounded-xl p-4 h-full flex flex-col">
       <div className="flex items-center gap-3 mb-1">
         <h3 className="text-[13px] text-white/60">수온 변화 추이</h3>
         <div className="ml-auto text-right">

@@ -11,16 +11,16 @@ const SearchBox = forwardRef(function SearchBox(
     <div className="relative">
       <Search
         size={14}
-        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-indigo-200/80"
       />
       <input
         ref={ref}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="h-9 w-full rounded-lg border border-slate-700/70 bg-slate-950/80
-                   pl-9 pr-3 text-sm text-slate-100 placeholder:text-slate-400
-                   focus:border-emerald-300/60 focus:outline-none focus:ring-2 focus:ring-emerald-300/35"
+        className="h-9 w-full rounded-lg border border-white/22 bg-white/10
+                   pl-9 pr-3 text-sm text-slate-50 placeholder:text-indigo-100/65
+                   focus:border-indigo-200/80 focus:outline-none focus:ring-2 focus:ring-indigo-300/45"
       />
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, useEffect, useCallback } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import changeCameraView from "@/utils/map/changeCameraView";
 import ControlsHeader from "./controlsHeader";
@@ -10,10 +10,7 @@ import { STAGE_META, STAGE_ORDER } from "@/constants/stageMeta";
 import Image from "next/image";
 import StageFilter from "./stageFilter";
 import SearchBox from "./searchBox";
-import BottomSheet, {
-  SNAP_PEEK,
-  SNAP_HALF,
-} from "@/components/ui/BottomSheet";
+import BottomSheet, { SNAP_PEEK, SNAP_HALF } from "@/components/ui/BottomSheet";
 import { Activity, Filter, MapPinned, Search } from "lucide-react";
 
 export default function TopRightControls({
@@ -30,13 +27,8 @@ export default function TopRightControls({
   const [open, setOpen] = useState(true);
   const [query, setQuery] = useState("");
   const [mobileSnap, setMobileSnap] = useState(SNAP_PEEK);
-  const [now, setNow] = useState(null);
   const router = useRouter();
   const searchRef = useRef(null);
-
-  useEffect(() => {
-    setNow(Date.now());
-  }, []);
 
   useEffect(() => {
     if (!areas?.length) return;
@@ -47,18 +39,6 @@ export default function TopRightControls({
       } catch {}
     });
   }, [areas, router]);
-
-  const daysAgo = useCallback(
-    (area) => {
-      if (!now) return null;
-      const iso = area.updatedAt ?? area.startDate;
-      if (!iso) return null;
-      const t = Date.parse(iso);
-      if (Number.isNaN(t)) return null;
-      return Math.max(0, Math.floor((now - t) / 86400000));
-    },
-    [now],
-  );
 
   const resetView = () => {
     if (!mapRef?.current) return;
@@ -133,47 +113,44 @@ export default function TopRightControls({
                   priority
                 />
                 <div>
-                  <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--ds-muted)]">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-indigo-100/72">
                     OC Dashboard
                   </p>
-                  <h2 className="text-sm font-semibold tracking-tight">
-                    해양 복원 운영 패널
-                  </h2>
                 </div>
               </div>
               <span
-                className="oc-kpi-glow rounded-full bg-emerald-500/20 px-2.5 py-1
-                           text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-300"
+                className="oc-kpi-glow rounded-full border border-orange-200/40 bg-orange-400/22 px-2.5 py-1
+                           text-[10px] font-semibold uppercase tracking-[0.14em] text-orange-100"
               >
                 Live
               </span>
             </div>
 
             <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
-              <div className="rounded-lg border border-slate-700/70 bg-slate-900/70 px-2 py-2">
-                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-slate-400">
+              <div className="rounded-lg border border-white/18 bg-white/10 px-2 py-2">
+                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-indigo-100/70">
                   <MapPinned size={12} />
                   Region
                 </div>
-                <p className="mt-1 text-sm font-semibold text-slate-100">
+                <p className="mt-1 text-sm font-semibold text-slate-50">
                   {currentLocation?.label ?? "전체"}
                 </p>
               </div>
-              <div className="rounded-lg border border-slate-700/70 bg-slate-900/70 px-2 py-2">
-                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-slate-400">
+              <div className="rounded-lg border border-white/18 bg-white/10 px-2 py-2">
+                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-indigo-100/70">
                   <Filter size={12} />
                   Filtered
                 </div>
-                <p className="mt-1 text-sm font-semibold text-slate-100">
+                <p className="mt-1 text-sm font-semibold text-slate-50">
                   {filteredCount}
                 </p>
               </div>
-              <div className="rounded-lg border border-slate-700/70 bg-slate-900/70 px-2 py-2">
-                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-slate-400">
+              <div className="rounded-lg border border-white/18 bg-white/10 px-2 py-2">
+                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-indigo-100/70">
                   <Activity size={12} />
                   Total
                 </div>
-                <p className="mt-1 text-sm font-semibold text-slate-100">
+                <p className="mt-1 text-sm font-semibold text-slate-50">
                   {areas.length}
                 </p>
               </div>
@@ -188,11 +165,8 @@ export default function TopRightControls({
             <>
               <div className="px-4 pt-2">
                 <div className="mb-2 flex items-center justify-between">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--ds-muted)]">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-indigo-100/72">
                     Search & Region
-                  </span>
-                  <span className="rounded-full border border-slate-700/70 bg-slate-900/80 px-2 py-0.5 text-[10px] text-slate-300">
-                    {filteredCount}/{areas.length}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
@@ -219,7 +193,6 @@ export default function TopRightControls({
               <AreaGroupsList
                 grouped={grouped}
                 onSelectArea={handleArea}
-                daysAgo={daysAgo}
                 activeRegion={!!currentLocation}
                 isLoading={isLoading}
                 workingArea={workingArea}
@@ -242,8 +215,8 @@ export default function TopRightControls({
                 />
                 <button
                   className="ml-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg
-                             border border-slate-700/70 bg-slate-900/70 text-slate-100
-                             hover:border-emerald-400/40 hover:bg-slate-900 transition"
+                             border border-white/20 bg-white/10 text-slate-100
+                             hover:border-indigo-300/60 hover:bg-indigo-500/20 transition"
                   onClick={() => {
                     if (snap <= SNAP_PEEK) setMobileSnap(SNAP_HALF);
                     setTimeout(() => searchRef.current?.focus(), 350);
@@ -281,7 +254,6 @@ export default function TopRightControls({
                   <AreaGroupsList
                     grouped={grouped}
                     onSelectArea={handleArea}
-                    daysAgo={daysAgo}
                     activeRegion={!!currentLocation}
                     isLoading={isLoading}
                     workingArea={workingArea}

@@ -36,8 +36,8 @@ export default function SurvivalStatusCard({ status }: Props) {
   const meta = STATUS_MAP[status] ?? fallback;
 
   return (
-    <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
-      <h3 className="text-[11px] text-white/50 mb-1">생존 상태</h3>
+    <div className="oc-detail-card rounded-xl p-4 h-full flex flex-col">
+      <h3 className="text-[11px] text-white/50 mb">생존 상태</h3>
       <p className="text-[10px] text-white/30 mb-3">기준: 작업 구역</p>
 
       <div className="flex-1 flex flex-col justify-center gap-4">

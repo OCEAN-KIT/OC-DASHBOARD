@@ -21,8 +21,8 @@ export default function AttachmentStatusCard({ statuses }: Props) {
   const hasData = statuses.length > 0;
 
   return (
-    <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
-      <h3 className="text-[11px] text-white/50 mb-1">착생 상태</h3>
+    <div className="oc-detail-card rounded-xl p-4 h-full flex flex-col">
+      <h3 className="text-[11px] text-white/50 mb">착생 상태</h3>
       <p className="text-[10px] text-white/30 mb-3">기준: 이식 단위</p>
 
       {hasData ? (
@@ -31,7 +31,10 @@ export default function AttachmentStatusCard({ statuses }: Props) {
             const meta = getMethodMeta(item.method);
             const color = STATUS_COLOR[item.status] ?? fallback;
             return (
-              <li key={item.method} className="flex items-center justify-between">
+              <li
+                key={item.method}
+                className="flex items-center justify-between"
+              >
                 <div className="flex items-center gap-2">
                   <span
                     className="inline-block w-2 h-2 rounded-full shrink-0"

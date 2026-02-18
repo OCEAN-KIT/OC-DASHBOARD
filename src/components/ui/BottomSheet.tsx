@@ -82,7 +82,7 @@ export default function BottomSheet({ snap, onSnapChange, children }: Props) {
       ref={sheetRef}
       className="pointer-events-auto fixed inset-x-0 bottom-0 z-50 flex flex-col
                  rounded-t-2xl border-t border-[var(--ds-border)] text-[var(--ds-text)] oc-panel
-                 shadow-[0_-16px_30px_rgba(2,6,23,0.5)]"
+                 shadow-[0_-20px_36px_rgba(2,6,23,0.56)]"
     >
       {/* drag handle */}
       <div
@@ -93,7 +93,7 @@ export default function BottomSheet({ snap, onSnapChange, children }: Props) {
         onPointerCancel={onUp}
         style={{ touchAction: "none" }}
       >
-        <div className="h-1.5 w-12 rounded-full bg-slate-500/80" />
+        <div className="h-1.5 w-12 rounded-full bg-indigo-200/70" />
       </div>
 
       {/* content */}

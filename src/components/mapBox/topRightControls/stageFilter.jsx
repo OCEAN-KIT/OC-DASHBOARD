@@ -18,8 +18,8 @@ export default function StageFilter({
             className={`relative h-7 flex-1 rounded-full border text-xs font-medium transition
               ${
                 on
-                  ? "border-emerald-300/60 bg-emerald-500/18 text-emerald-100"
-                  : "border-slate-700/70 bg-slate-900/70 text-slate-200 hover:border-slate-500/80 hover:bg-slate-900"
+                  ? "border-indigo-200/70 bg-indigo-500/30 text-indigo-50"
+                  : "border-white/20 bg-white/10 text-slate-100 hover:border-indigo-300/65 hover:bg-indigo-500/18"
               }`}
           >
             <span

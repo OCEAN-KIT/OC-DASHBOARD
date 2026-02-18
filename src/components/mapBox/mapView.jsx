@@ -215,8 +215,8 @@ export default function MapView() {
               priority
             />
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-slate-400">
-                OC Record
+              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-indigo-100/72">
+                OC DASHBOARD
               </p>
               <h1 className="text-sm font-semibold tracking-tight text-slate-50">
                 해양 생태 복원 현황
@@ -254,8 +254,8 @@ export default function MapView() {
                    max-md:top-3 max-md:bottom-auto"
       >
         <p
-          className="oc-panel max-w-[860px] rounded-xl border border-slate-800/80 px-4 py-2
-                     text-center text-[12px] leading-relaxed text-slate-300
+          className="oc-panel-plain max-w-[860px] rounded-xl px-4 py-2
+                     text-center text-[12px] leading-relaxed text-indigo-50/80
                      max-md:text-[10px] max-md:leading-snug"
         >
           본 대시보드의 모든 정보는 오션캠퍼스 현장 기록 시스템(OC RECORD)을

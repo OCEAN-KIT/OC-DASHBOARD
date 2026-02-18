@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Fira_Code, Fira_Sans } from "next/font/google";
+import { Outfit, Work_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 
@@ -9,16 +9,16 @@ export const metadata: Metadata = {
   description: "Ocean Campus Dashboard",
 };
 
-const firaSans = Fira_Sans({
+const workSans = Work_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-fira-sans",
+  variable: "--font-work-sans",
 });
 
-const firaCode = Fira_Code({
+const outfit = Outfit({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-fira-code",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-outfit",
 });
 
 export default function RootLayout({
@@ -43,7 +43,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body
-        className={`${firaSans.variable} ${firaCode.variable} min-h-screen bg-[var(--ds-bg)] text-[var(--ds-text)] font-sans`}
+        className={`${workSans.variable} ${outfit.variable} min-h-screen bg-[var(--ds-bg)] text-[var(--ds-text)] font-sans`}
       >
         <Providers>{children}</Providers>
       </body>

@@ -22,7 +22,7 @@ export default function TimelineView({ items }: Props) {
   const [y, m, d] = active?.label?.split(".") ?? ["", "", ""];
 
   return (
-    <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
+    <div className="oc-detail-card rounded-xl p-4 h-full flex flex-col">
       <div className="mb-3 flex items-center justify-between">
         <h3 className="text-[11px] text-white/50 -mt-3 ml-2">타임라인</h3>
         <div className="rounded-full border border-white/15 bg-white/10 px-3.5 py-1 text-[13px] font-semibold text-white/90">

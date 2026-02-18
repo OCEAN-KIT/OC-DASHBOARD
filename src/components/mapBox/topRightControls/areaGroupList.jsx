@@ -7,7 +7,6 @@ import AreaItemCard from "./areaItemCard";
 export default function AreaGroupsList({
   grouped,
   onSelectArea,
-  daysAgo,
   activeRegion,
   workingArea,
   isLoading,
@@ -26,11 +25,11 @@ export default function AreaGroupsList({
     return (
       <div className="px-3 py-6">
         <div className="space-y-2">
-          <div className="h-9 animate-pulse rounded-lg bg-slate-800/70" />
-          <div className="h-9 animate-pulse rounded-lg bg-slate-800/70" />
-          <div className="h-9 animate-pulse rounded-lg bg-slate-800/70" />
+          <div className="h-9 animate-pulse rounded-lg bg-indigo-200/15" />
+          <div className="h-9 animate-pulse rounded-lg bg-indigo-200/15" />
+          <div className="h-9 animate-pulse rounded-lg bg-indigo-200/15" />
         </div>
-        <p className="mt-3 text-center text-sm text-slate-400">불러오는 중...</p>
+        <p className="mt-3 text-center text-sm text-indigo-100/70">불러오는 중...</p>
       </div>
     );
   }
@@ -47,8 +46,8 @@ export default function AreaGroupsList({
                   type="button"
                   onClick={() => toggle(group.stage)}
                   className="sticky top-0 z-10 -mx-2 flex w-[calc(100%+16px)] items-center justify-between
-                             border-y border-slate-800/70 bg-slate-900/90 px-3 py-1.5 text-xs
-                             tracking-wide text-slate-200 hover:bg-slate-900 transition"
+                             border-y border-white/15 bg-indigo-950/48 px-3 py-1.5 text-xs
+                             tracking-wide text-indigo-50 hover:bg-indigo-900/55 transition"
                   aria-expanded={isOpen}
                 >
                   <div className="flex items-center gap-2">
@@ -58,7 +57,7 @@ export default function AreaGroupsList({
                     />
                     {group.stage} ({group.items.length})
                   </div>
-                  <span className="text-slate-400">
+                  <span className="text-indigo-100/60">
                     {isOpen ? (
                       <ChevronUp size={16} />
                     ) : (
@@ -75,7 +74,6 @@ export default function AreaGroupsList({
                         area={a}
                         color={group.color}
                         onClick={() => onSelectArea(a)}
-                        days={daysAgo(a)}
                         isActive={workingArea?.id === a.id}
                       />
                     ))}
@@ -85,12 +83,12 @@ export default function AreaGroupsList({
             );
           })
         ) : (
-          <div className="px-3 py-8 text-center text-sm text-slate-400">
+          <div className="px-3 py-8 text-center text-sm text-indigo-100/70">
             조건에 맞는 작업영역이 없습니다
           </div>
         )
       ) : (
-        <div className="px-3 py-8 text-center text-sm text-slate-400">
+        <div className="px-3 py-8 text-center text-sm text-indigo-100/70">
           지역을 먼저 선택하세요
         </div>
       )}

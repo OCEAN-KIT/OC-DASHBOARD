@@ -55,11 +55,10 @@ export default function MethodDonutChart({ distribution }: Props) {
   });
 
   return (
-    <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
+    <div className="oc-detail-card rounded-xl p-4 h-full flex flex-col">
       <div className="flex items-center gap-3 mb-1">
         <h3 className="text-[11px] text-white/50">이식 방식별 분포</h3>
       </div>
-      <span className="text-[10px] text-white/30">기준: 이식 단위</span>
 
       {total > 0 ? (
         <div className="flex-1 min-h-0 flex items-center justify-center">

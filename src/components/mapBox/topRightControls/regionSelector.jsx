@@ -15,8 +15,8 @@ export default function RegionSelector({ activeId, onSelect }) {
             className={`h-9 whitespace-nowrap rounded-xl border px-4 text-sm font-semibold transition
               ${
                 active
-                  ? "border-emerald-300/60 bg-emerald-500/20 text-emerald-100 shadow-[inset_0_0_0_1px_rgba(110,231,183,0.35)]"
-                  : "border-slate-700/70 bg-slate-900/70 text-slate-100 hover:border-slate-500/70 hover:bg-slate-900"
+                  ? "border-indigo-200/70 bg-indigo-500/32 text-indigo-50 shadow-[inset_0_0_0_1px_rgba(199,210,254,0.5)]"
+                  : "border-white/20 bg-white/10 text-slate-100 hover:border-indigo-300/65 hover:bg-indigo-500/20"
               }`}
           >
             {r.label}

@@ -41,7 +41,7 @@ export default function EnvironmentSummaryCard({ summary }: Props) {
         return (
           <div
             key={key}
-            className="rounded-xl bg-white/5 p-4 h-full flex flex-col"
+            className="oc-detail-card rounded-xl p-4 h-full flex flex-col"
           >
             <h3 className="text-[11px] text-white/50">{label}</h3>
             <p className="text-[10px] text-white/30 mb-3">최근 3개월 기준</p>
