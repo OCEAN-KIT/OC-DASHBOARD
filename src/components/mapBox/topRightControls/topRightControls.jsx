@@ -53,11 +53,13 @@ export default function TopRightControls({
     if (currentLocation?.id === region.id) {
       setCurrentLocation(null);
       setWorkingArea(null);
+      setActiveStage(null);
       resetView();
       return;
     }
     setCurrentLocation(region);
     setWorkingArea(null);
+    setActiveStage(null);
     if (mapRef?.current) changeCameraView(mapRef.current, region);
   };
 

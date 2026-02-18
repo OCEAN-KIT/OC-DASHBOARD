@@ -131,6 +131,7 @@ export default function MapView() {
           if (currentLocationRef.current?.id === region.id) {
             setCurrentLocation(null);
             setWorkingArea(null);
+            setActiveStage(null);
             clearSpecialSelection();
             changeCameraView(map, {
               center: [129.38, 36.5],
@@ -140,6 +141,7 @@ export default function MapView() {
           } else {
             setCurrentLocation(region);
             setWorkingArea(null);
+            setActiveStage(null);
             clearSpecialSelection();
             el.classList.add("is-selected");
           }
