@@ -1,7 +1,7 @@
-# Dashboard Page Overrides
+# Work Area Detail Page Overrides
 
 > **PROJECT:** OC Dashboard
-> **Generated:** 2026-02-18 09:37:17
+> **Generated:** 2026-02-18 09:37:24
 > **Page Type:** Dashboard / Data View
 
 > ⚠️ **IMPORTANT:** Rules in this file **override** the Master file (`design-system/MASTER.md`).
@@ -13,13 +13,13 @@
 
 ### Layout Overrides
 
-- **Max Width:** 1400px or full-width
-- **Grid:** 12-column grid for data flexibility
+- **Max Width:** 800px (narrow, focused)
+- **Layout:** Single column, centered
 - **Sections:** 1. Intro (Vertical), 2. The Journey (Horizontal Track), 3. Detail Reveal, 4. Vertical Footer
 
 ### Spacing Overrides
 
-- **Content Density:** High — optimize for information display
+- **Content Density:** Low — focus on clarity
 
 ### Typography Overrides
 
@@ -31,9 +31,9 @@
 
 ### Component Overrides
 
-- Avoid: Gray text on gray background
-- Avoid: Low contrast text
-- Avoid: Cramped or excessive line height
+- Avoid: Break browser/app back button behavior
+- Avoid: Rely only on hover for important actions
+- Avoid: Let images/content push layout around
 
 ---
 
@@ -45,8 +45,8 @@
 
 ## Recommendations
 
-- Effects: Hover tooltips, chart zoom on click, row highlighting on hover, smooth filter animations, data loading spinners
-- Typography: Use darker text on light backgrounds
-- Accessibility: Minimum 4.5:1 ratio for normal text
-- Typography: Use 1.5-1.75 for body text
+- Effects: KPI value animations (count-up), trend arrow direction animations, metric card hover lift, alert pulse effect
+- Navigation: Preserve navigation history properly
+- Animation: Use click/tap for primary interactions
+- Layout: Reserve space for async content
 - CTA Placement: Floating Sticky CTA or End of Horizontal Track
