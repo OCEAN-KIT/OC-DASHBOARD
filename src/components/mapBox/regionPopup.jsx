@@ -37,10 +37,11 @@ function lighten(hex, t = 0.35) {
 /** stage → 팝업 스타일 계산 (constants는 그대로) **/
 function getPopupStyle(stage) {
   const base = getStageColor(stage); // STAGE_META의 color 사용
-  const text = base; // 텍스트는 base 컬러
-  const bg = rgba(base, 0.15); // 배경칩은 투명도 0.15
-  const dot = lighten(base, 0.35); // 도트는 살짝 밝게
-  return { text, bg, dot };
+  const text = lighten(base, 0.4);
+  const bg = rgba(base, 0.22);
+  const ring = rgba(base, 0.4);
+  const dot = lighten(base, 0.55);
+  return { text, bg, ring, dot };
 }
 
 function formatDate(ymd) {
@@ -60,18 +61,18 @@ export default function RegionPopup({ region, onOpen }) {
     <div
       style={{
         background:
-          "linear-gradient(180deg, rgba(15,23,42,.92) 0%, rgba(2,6,23,.88) 100%)",
-        color: "#e5e7eb",
+          "linear-gradient(160deg, rgba(30,41,59,.82) 0%, rgba(15,23,42,.88) 52%, rgba(15,23,42,.92) 100%)",
+        color: "#e2e8f0",
         borderRadius: 14,
         padding: "12px 14px",
         fontSize: 13.5,
         lineHeight: 1.35,
-        boxShadow: "0 12px 32px rgba(0,0,0,.45)",
-        border: "1px solid rgba(148,163,184,.25)",
-        backdropFilter: "saturate(160%) blur(10px)",
-        WebkitBackdropFilter: "saturate(160%) blur(10px)",
-        minWidth: 220,
-        maxWidth: 300,
+        boxShadow: "0 18px 36px rgba(2,6,23,.55)",
+        border: "1px solid rgba(255,255,255,.24)",
+        backdropFilter: "saturate(170%) blur(14px)",
+        WebkitBackdropFilter: "saturate(170%) blur(14px)",
+        minWidth: 240,
+        maxWidth: 320,
       }}
     >
       {/* 헤더 */}
@@ -99,13 +100,14 @@ export default function RegionPopup({ region, onOpen }) {
         <span
           style={{
             marginLeft: "auto",
-            fontSize: 12,
+            fontSize: 11,
             fontWeight: 700,
             color: stageCfg.text,
             background: stageCfg.bg,
-            padding: "4px 8px",
+            padding: "4px 9px",
             borderRadius: 999,
-            border: `1px solid ${rgba(stageCfg.text, 0.13)}`,
+            border: `1px solid ${stageCfg.ring}`,
+            letterSpacing: ".02em",
           }}
         >
           {STAGE_META[level] ? level : "단계 미지정"}
@@ -126,21 +128,21 @@ export default function RegionPopup({ region, onOpen }) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "88px 1fr",
+          gridTemplateColumns: "86px 1fr",
           rowGap: 6,
           columnGap: 12,
           alignItems: "center",
         }}
       >
-        <div style={{ color: "#94a3b8" }}>복원 시작일</div>
+        <div style={{ color: "rgba(199,210,254,.78)" }}>복원 시작일</div>
         <div style={{ fontWeight: 600 }}>{formatDate(startDate)}</div>
 
-        <div style={{ color: "#94a3b8" }}>수심</div>
+        <div style={{ color: "rgba(199,210,254,.78)" }}>수심</div>
         <div style={{ fontWeight: 600 }}>
           {depth != null ? `${depth} m` : "-"}
         </div>
 
-        <div style={{ color: "#94a3b8" }}>해역 유형</div>
+        <div style={{ color: "rgba(199,210,254,.78)" }}>해역 유형</div>
         <div style={{ fontWeight: 600 }}>{habitat ?? "-"}</div>
       </div>
 
@@ -152,7 +154,7 @@ export default function RegionPopup({ region, onOpen }) {
           height: 2,
           borderRadius: 999,
           background:
-            "linear-gradient(90deg, transparent, rgba(96,165,250,.5), rgba(167,139,250,.55), rgba(16,185,129,.55), transparent)",
+            "linear-gradient(90deg, transparent, rgba(99,102,241,.6), rgba(129,140,248,.8), rgba(249,115,22,.6), transparent)",
           filter: "blur(.2px)",
         }}
       />
@@ -166,21 +168,30 @@ export default function RegionPopup({ region, onOpen }) {
           style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: 3,
-            fontSize: 12,
+            gap: 4,
+            fontSize: 12.5,
             fontWeight: 600,
-            color: "#e5e7eb",
+            color: "#f8fafc",
+            background: "rgba(99,102,241,.24)",
+            border: "1px solid rgba(199,210,254,.52)",
+            borderRadius: 999,
+            padding: "6px 10px",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,.25)",
             cursor: "pointer",
             transition:
-              "transform 120ms ease, box-shadow 120ms ease, background 120ms ease",
+              "transform 180ms ease, box-shadow 180ms ease, background 180ms ease",
           }}
           onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateY(-1px)";
+            e.currentTarget.style.background = "rgba(129,140,248,.34)";
             e.currentTarget.style.boxShadow =
-              "inset 0 1px 0 rgba(255,255,255,.08), 0 10px 22px rgba(67,56,202,.35)";
+              "inset 0 1px 0 rgba(255,255,255,.28), 0 12px 22px rgba(79,70,229,.35)";
           }}
           onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.background = "rgba(99,102,241,.24)";
             e.currentTarget.style.boxShadow =
-              "inset 0 1px 0 rgba(255,255,255,.06), 0 6px 16px rgba(67,56,202,.25)";
+              "inset 0 1px 0 rgba(255,255,255,.25)";
           }}
           onClick={onOpen}
         >

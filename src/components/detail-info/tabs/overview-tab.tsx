@@ -19,7 +19,7 @@ function Card({
 }) {
   return (
     <div
-      className={`relative rounded-2xl border border-white/10 bg-white/6 p-5 transition-colors hover:bg-white/9 ${className}`}
+      className={`oc-detail-card relative rounded-2xl p-5 transition-colors hover:bg-white/15 ${className}`}
     >
       {deco && (
         <div className="absolute inset-0 overflow-hidden rounded-2xl">
@@ -42,8 +42,8 @@ function CardLabel({
 }) {
   return (
     <div className="flex items-center gap-1.5 mb-3">
-      <Icon className="h-3.5 w-3.5 text-white/35" />
-      <span className="text-[11px] font-medium text-white/35 uppercase tracking-wider">
+      <Icon className="h-3.5 w-3.5 text-indigo-100/55" />
+      <span className="text-[11px] font-medium text-indigo-100/55 uppercase tracking-wider">
         {label}
       </span>
       {suffix}
@@ -75,7 +75,7 @@ function StageTooltip() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-white/20 text-[10px] text-white/50 cursor-help"
+        className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-white/30 text-[10px] text-indigo-100/70 cursor-help bg-white/10"
         aria-label="현재 단계 도움말"
       >
         ?
@@ -83,7 +83,8 @@ function StageTooltip() {
 
       <span
         className={[
-          "pointer-events-none absolute bottom-full left-0 mb-2 w-56 rounded-lg border border-white/15 bg-black/80 backdrop-blur-md p-2.5 text-xs opacity-0 transition-opacity z-50",
+          "pointer-events-none absolute bottom-full left-0 mb-2 w-56 rounded-lg p-2.5 text-xs opacity-0 transition-opacity z-50",
+          "oc-glass-subtle text-indigo-50",
           "max-md:bottom-auto max-md:top-full max-md:mt-2 max-md:mb-0",
           "group-hover:pointer-events-auto group-hover:opacity-100",
           open ? "pointer-events-auto opacity-100" : "",
@@ -100,7 +101,7 @@ function StageTooltip() {
                 />
                 <span>
                   <span className="font-medium text-white/90">{stage}</span>
-                  <span className="text-white/50">: {meta.description}</span>
+                  <span className="text-indigo-100/70">: {meta.description}</span>
                 </span>
               </li>
             );
@@ -311,7 +312,7 @@ export default function OverviewTab({ data }: Props) {
         <CardLabel icon={Activity} label="현재 단계" suffix={<StageTooltip />} />
         <p className="text-xl font-semibold">
           {overview.currentStatus.name}
-          <span className="ml-2 text-sm font-normal text-white/40">
+          <span className="ml-2 text-sm font-normal text-indigo-100/60">
             {overview.currentStatus.description}
           </span>
         </p>
@@ -323,7 +324,7 @@ export default function OverviewTab({ data }: Props) {
         <CardLabel icon={Ruler} label="면적" />
         <p className="text-2xl font-semibold tabular-nums">
           {nf.format(overview.areaSize)}
-          <span className="ml-1 text-sm font-normal text-white/40">
+          <span className="ml-1 text-sm font-normal text-indigo-100/60">
             m<sup>2</sup>
           </span>
         </p>
@@ -340,7 +341,7 @@ export default function OverviewTab({ data }: Props) {
         <CardLabel icon={Waves} label="평균 수심" />
         <p className="text-2xl font-semibold tabular-nums">
           {overview.avgDepth}
-          <span className="ml-1 text-sm font-normal text-white/40">m</span>
+          <span className="ml-1 text-sm font-normal text-indigo-100/60">m</span>
         </p>
       </Card>
 
@@ -355,7 +356,7 @@ export default function OverviewTab({ data }: Props) {
         <CardLabel icon={Calendar} label="관측 기간" />
         <div className="flex items-center gap-3">
           <span className="text-lg font-semibold tabular-nums">{startStr}</span>
-          <span className="h-0.5 w-8 rounded-full bg-white/20" />
+          <span className="h-0.5 w-8 rounded-full bg-indigo-200/35" />
           <span className="text-lg font-semibold tabular-nums">{endStr}</span>
         </div>
       </Card>
