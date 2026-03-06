@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
 import { REGIONS, COORDS } from "@/constants/regions";
 import TopRightControls from "@/components/mapBox/topRightControls/topRightControls";
 import changeCameraView from "@/utils/map/changeCameraView";
@@ -15,6 +14,7 @@ export default function MapView() {
   const mapRef = useRef(null);
   const containerRef = useRef(null);
   const specialMarkerElsRef = useRef({});
+  const [shouldInitMap, setShouldInitMap] = useState(false);
 
   const [currentLocation, setCurrentLocation] = useState(null);
   const [workingArea, setWorkingArea] = useState(null);
@@ -68,7 +68,28 @@ export default function MapView() {
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    if (typeof window === "undefined") return;
+
+    if ("requestIdleCallback" in window) {
+      const idleId = window.requestIdleCallback(() => setShouldInitMap(true), {
+        timeout: 1200,
+      });
+      return () => window.cancelIdleCallback?.(idleId);
+    }
+
+    const timerId = window.setTimeout(() => setShouldInitMap(true), 800);
+    return () => window.clearTimeout(timerId);
+  }, []);
+
+  useEffect(() => {
+    if (!shouldInitMap || !containerRef.current || mapRef.current) return;
+    if (!document.getElementById("mapbox-gl-css")) {
+      const linkEl = document.createElement("link");
+      linkEl.id = "mapbox-gl-css";
+      linkEl.rel = "stylesheet";
+      linkEl.href = "/vendor/mapbox-gl.css";
+      document.head.appendChild(linkEl);
+    }
 
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
     const valid = token.startsWith("pk.") && token.length > 50;
@@ -78,6 +99,16 @@ export default function MapView() {
           "Check .env(.local) NEXT_PUBLIC_MAPBOX_TOKEN and restart the dev server.",
       );
       return;
+    }
+
+    try {
+      Object.defineProperty(mapboxgl.config, "EVENTS_URL", {
+        configurable: true,
+        enumerable: true,
+        get: () => null,
+      });
+    } catch (err) {
+      console.warn("[Mapbox] Failed to disable telemetry events URL:", err);
     }
 
     mapboxgl.accessToken = token;
@@ -182,7 +213,7 @@ export default function MapView() {
         mapRef.current = null;
       }
     };
-  }, []);
+  }, [shouldInitMap]);
 
   return (
     <div
