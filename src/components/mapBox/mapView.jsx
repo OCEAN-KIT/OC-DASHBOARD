@@ -14,7 +14,6 @@ export default function MapView() {
   const mapRef = useRef(null);
   const containerRef = useRef(null);
   const specialMarkerElsRef = useRef({});
-  const [shouldInitMap, setShouldInitMap] = useState(false);
 
   const [currentLocation, setCurrentLocation] = useState(null);
   const [workingArea, setWorkingArea] = useState(null);
@@ -68,28 +67,16 @@ export default function MapView() {
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    if ("requestIdleCallback" in window) {
-      const idleId = window.requestIdleCallback(() => setShouldInitMap(true), {
-        timeout: 1200,
-      });
-      return () => window.cancelIdleCallback?.(idleId);
-    }
-
-    const timerId = window.setTimeout(() => setShouldInitMap(true), 800);
-    return () => window.clearTimeout(timerId);
+    if (document.getElementById("mapbox-gl-css")) return;
+    const linkEl = document.createElement("link");
+    linkEl.id = "mapbox-gl-css";
+    linkEl.rel = "stylesheet";
+    linkEl.href = "/vendor/mapbox-gl.css";
+    document.head.appendChild(linkEl);
   }, []);
 
   useEffect(() => {
-    if (!shouldInitMap || !containerRef.current || mapRef.current) return;
-    if (!document.getElementById("mapbox-gl-css")) {
-      const linkEl = document.createElement("link");
-      linkEl.id = "mapbox-gl-css";
-      linkEl.rel = "stylesheet";
-      linkEl.href = "/vendor/mapbox-gl.css";
-      document.head.appendChild(linkEl);
-    }
+    if (!containerRef.current || mapRef.current) return;
 
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
     const valid = token.startsWith("pk.") && token.length > 50;
@@ -213,7 +200,7 @@ export default function MapView() {
         mapRef.current = null;
       }
     };
-  }, [shouldInitMap]);
+  }, []);
 
   return (
     <div

@@ -29,8 +29,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <link rel="preconnect" href="https://api.mapbox.com" />
-        <link rel="preconnect" href="https://events.mapbox.com" />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-B1BYG2G8EC"
           strategy="afterInteractive"

@@ -3,6 +3,7 @@
 ## 1. Render-blocking CSS로 인한 FCP 지연
 
 ### 문제
+
 Ocean Campus Dashboard의 Lighthouse/PageSpeed Insights에서 다음 경고가 반복됨.
 
 - `렌더링 차단 요청` (Render-blocking resources)
@@ -25,12 +26,14 @@ JS에서 `mapboxgl`을 직접 `mapbox-gl-*` 클래스로 쓰지 않아도, Mapbo
 ### 적용
 
 1. 정적 import 제거
+
 ```diff
  import mapboxgl from "mapbox-gl";
  -import "mapbox-gl/dist/mapbox-gl.css";
 ```
 
 2. 런타임에 `<link rel="stylesheet">` 주입
+
 ```jsx
 useEffect(() => {
   if (document.getElementById("mapbox-gl-css")) return;
@@ -49,6 +52,7 @@ useEffect(() => {
 ## 2. Mapbox 텔레메트리 요청(`/events/v2`) 제거
 
 ### 문제
+
 초기 네트워크에서 다음 요청이 보였고, 매우 작은 크기지만 지연이 커서 체인 병목이 발생했다.
 
 - `/events/v2?access_token=...` (events.mapbox.com)
