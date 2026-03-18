@@ -10,7 +10,7 @@ export default function BeforeAfterCard({ beforeUrl, afterUrl }: Props) {
   const hasData = beforeUrl || afterUrl;
 
   return (
-    <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
+    <div className="oc-detail-card rounded-xl p-4 h-full flex flex-col">
       <div className="flex items-center gap-3 mb-3">
         <h3 className="text-[11px] text-white/50">복원 전 / 후</h3>
         <span className="text-[10px] text-white/30">동일 지점 기준 비교</span>

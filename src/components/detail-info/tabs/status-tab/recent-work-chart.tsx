@@ -14,7 +14,7 @@ export default function RecentWorkChart({ chart }: Props) {
   const hasData = values.length > 0 && values.some((v) => v > 0);
 
   return (
-    <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
+    <div className="oc-detail-card rounded-xl p-4 h-full flex flex-col">
       <div className="flex items-center gap-3 mb-1">
         <h3 className="text-[11px] text-white/50">최근 3개월 작업횟수</h3>
         {chart.period && (

@@ -1,23 +1,17 @@
-import axiosInstance from "@/utils/axiosinstance";
-import {
-  AreaDetails,
-  AreaDetailsResponse,
-  AreaSummary,
-  AreasResponse,
-  RegionId,
-} from "./types";
+import { getMockAreaDetails, getMockAreas } from "./mockAreas";
+import { AreaDetails, AreaSummary, RegionId } from "./types";
 
 export async function getAreas(region: RegionId): Promise<AreaSummary[]> {
-  const res = await axiosInstance.get<AreasResponse>("/api/dashboard/areas", {
-    params: { region },
-  });
-  return res.data.data.content;
+  return getMockAreas(region);
 }
 
 export async function getAreaDetails(id: number): Promise<AreaDetails> {
-  const res = await axiosInstance.get<AreaDetailsResponse>(
-    `/api/dashboard/areas/${id}`
-  );
+  const numericId = Number(id);
+  const data = getMockAreaDetails(numericId);
 
-  return res.data.data;
+  if (!data) {
+    throw new Error(`Mock area detail not found for id=${id}`);
+  }
+
+  return data;
 }

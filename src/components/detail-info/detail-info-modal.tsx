@@ -32,10 +32,12 @@ export default function DetailInfoModal({ areaId }: Props) {
       <div
         aria-modal
         role="dialog"
-        className="fixed inset-0 z-100 flex items-center justify-center"
+        className="fixed inset-0 z-100 flex items-center justify-center px-4"
       >
-        <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" />
-        <div className="relative z-10 text-white text-sm">로딩 중...</div>
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
+        <div className="relative z-10 rounded-xl border border-white/20 bg-slate-900/70 px-4 py-3 text-sm text-slate-100 oc-glass-subtle">
+          로딩 중...
+        </div>
       </div>
     );
   }
@@ -45,16 +47,16 @@ export default function DetailInfoModal({ areaId }: Props) {
       <div
         aria-modal
         role="dialog"
-        className="fixed inset-0 z-100 flex items-center justify-center"
+        className="fixed inset-0 z-100 flex items-center justify-center px-4"
       >
         <div
-          className="absolute inset-0 bg-black/55 backdrop-blur-sm"
+          className="absolute inset-0 bg-black/30 backdrop-blur-sm"
           onClick={() => router.back()}
         />
-        <div className="relative z-10 max-w-[92vw] rounded-2xl border border-white/15 bg-white/10 p-6 text-white backdrop-blur-xl shadow-2xl">
+        <div className="relative z-10 max-w-[92vw] rounded-2xl p-6 text-slate-100 oc-detail-shell">
           <div className="text-sm">데이터가 없습니다. (ID: {areaId})</div>
           <button
-            className="mt-4 rounded-md border border-white/15 bg-white/10 px-3 py-2 text-sm"
+            className="mt-4 rounded-md border border-white/20 bg-white/10 px-3 py-2 text-sm hover:bg-indigo-500/20"
             onClick={() => router.back()}
           >
             닫기
@@ -71,15 +73,15 @@ export default function DetailInfoModal({ areaId }: Props) {
       className="fixed inset-0 z-100 flex items-center justify-center"
     >
       <div
-        className="absolute inset-0 bg-black/55 backdrop-blur-sm max-md:bg-black/25"
+        className="absolute inset-0 bg-black/24 backdrop-blur-sm max-md:bg-black/30"
         onClick={() => router.back()}
       />
 
-      <div className="relative z-10 w-[980px] max-w-[92vw] rounded-2xl border border-white/15 bg-white/10 text-white backdrop-blur-xl shadow-2xl animate-popIn max-md:w-full max-md:h-full max-md:max-w-none max-md:rounded-none max-md:border-0 max-md:shadow-none max-md:bg-black/20">
+      <div className="relative z-10 w-[820px] max-w-[92vw] rounded-2xl text-white animate-popIn oc-detail-shell max-md:w-full max-md:h-full max-md:max-w-none max-md:rounded-none max-md:border-0 max-md:shadow-none">
         <div className="max-md:flex max-md:flex-col max-md:h-full">
           <Header overview={area.overview} onClose={() => router.back()} />
 
-          <div className="h-px w-full bg-white/10" />
+          <div className="h-px w-full oc-soft-divider" />
           <TabsBar active={tab} onChange={setTab} />
 
           <div className="p-5 space-y-2 max-md:px-4 max-md:pb-6 max-md:flex-1 max-md:overflow-y-auto">

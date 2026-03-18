@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Outfit, Work_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 
@@ -7,6 +8,18 @@ export const metadata: Metadata = {
   title: "OC-DASHBOARD",
   description: "Ocean Campus Dashboard",
 };
+
+const workSans = Work_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-work-sans",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-outfit",
+});
 
 export default function RootLayout({
   children,
@@ -29,7 +42,9 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="min-h-screen">
+      <body
+        className={`${workSans.variable} ${outfit.variable} min-h-screen bg-[var(--ds-bg)] text-[var(--ds-text)] font-sans`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

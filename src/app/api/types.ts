@@ -1,13 +1,13 @@
 export type RegionId = "POHANG" | "ULJIN";
 
-export type LevelStage = "OBSERVATION" | "SETTLEMENT" | "GROWTH" | "MANAGEMENT";
+export type LevelStage = "관측" | "정착" | "성장" | "관리";
 
 export type AreaSummary = {
   id: number;
   name: string;
   restorationRegion: string;
-  startDate: string;
-  endDate: string;
+  startDate: [number, number, number];
+  endDate: [number, number, number] | null;
   habitat: string;
   depth: number;
   areaSize: number;
@@ -15,6 +15,7 @@ export type AreaSummary = {
   attachmentStatus: string;
   lat: number;
   lon: number;
+  updatedAt?: string;
 };
 
 export type AreasResponse = {

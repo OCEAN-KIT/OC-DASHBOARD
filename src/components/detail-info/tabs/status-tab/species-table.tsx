@@ -26,7 +26,7 @@ function MethodTooltip() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-white/20 text-[10px] text-white/50 cursor-help"
+        className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-white/30 bg-white/10 text-[10px] text-indigo-100/70 cursor-help"
         aria-label="이식 단위 도움말"
       >
         ?
@@ -34,7 +34,8 @@ function MethodTooltip() {
 
       <span
         className={[
-          "pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 rounded-lg border border-white/15 bg-black/80 backdrop-blur-md p-2.5 text-xs opacity-0 transition-opacity z-10",
+          "pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 rounded-lg p-2.5 text-xs opacity-0 transition-opacity z-10",
+          "oc-glass-subtle text-indigo-50",
           "max-md:bottom-auto max-md:top-full max-md:mt-2 max-md:mb-0",
           "group-hover:pointer-events-auto group-hover:opacity-100",
           open ? "pointer-events-auto opacity-100" : "",
@@ -49,7 +50,7 @@ function MethodTooltip() {
               />
               <span>
                 <span className="font-medium text-white/90">{meta.name}</span>
-                <span className="text-white/50">: {meta.description}</span>
+                <span className="text-indigo-100/70">: {meta.description}</span>
               </span>
             </li>
           ))}
@@ -67,7 +68,7 @@ export default function SpeciesTable({ list }: Props) {
   const nf = new Intl.NumberFormat("ko-KR");
 
   return (
-    <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
+    <div className="oc-detail-card rounded-xl p-4 h-full flex flex-col">
       <h3 className="text-[11px] text-white/50 mb-2">
         <span className="inline-flex items-center">이식 종별 현황</span>
       </h3>

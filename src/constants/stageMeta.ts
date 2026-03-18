@@ -28,6 +28,11 @@ export const STAGE_META: Record<
   },
 };
 
-export const getStageColor = (stage: string) =>
-  (STAGE_META as Record<string, { color: string }>)[stage]?.color ??
-  "rgba(255,255,255,.6)";
+const DEFAULT_STAGE_COLOR = "rgba(255,255,255,.6)";
+
+const isStageName = (value: string): value is StageName => value in STAGE_META;
+
+export const getStageColor = (stage: string) => {
+  if (!isStageName(stage)) return DEFAULT_STAGE_COLOR;
+  return STAGE_META[stage].color;
+};

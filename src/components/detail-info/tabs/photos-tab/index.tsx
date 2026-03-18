@@ -33,8 +33,8 @@ export default function PhotosTab({ data }: Props) {
               className={[
                 "h-7 px-3 rounded-lg text-[12px] transition",
                 on
-                  ? "bg-white/15 text-white"
-                  : "bg-white/5 text-white/40 hover:bg-white/10 hover:text-white/60",
+                  ? "border border-indigo-200/65 bg-indigo-500/30 text-indigo-50"
+                  : "border border-white/10 bg-white/10 text-indigo-100/60 hover:border-indigo-300/50 hover:bg-indigo-500/18 hover:text-indigo-50",
               ].join(" ")}
             >
               {t.label}

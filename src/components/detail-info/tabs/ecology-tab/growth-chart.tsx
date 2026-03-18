@@ -15,7 +15,7 @@ export default function GrowthChart({ chart }: Props) {
   const hasData = values.length > 0 && values.some((v) => v > 0);
 
   return (
-    <div className="rounded-xl bg-white/5 p-4 h-full flex flex-col">
+    <div className="oc-detail-card rounded-xl p-4 h-full flex flex-col">
       <div className="flex items-center gap-3 mb-1">
         <h3 className="text-[13px] text-white/60">대표 개체 성장 추이</h3>
         {chart.targetSpecies && (
