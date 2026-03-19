@@ -6,7 +6,9 @@
     "dev": "next dev --experimental-https --experimental-https-key ./localhost+2-key.pem --experimental-https-cert ./localhost+2.pem -p 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "mcp:devlog": "tsx tools/devlog-mcp/src/index.ts",
+    "mcp:devlog:doctor": "tsx tools/devlog-mcp/src/doctor.ts"
   },
   "dependencies": {
     "@mapbox/mapbox-gl-language": "^1.0.1",
@@ -23,14 +25,19 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "@notionhq/client": "^5.13.0",
     "@tailwindcss/postcss": "^4",
     "@tanstack/react-query-devtools": "^5.91.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.3.1",
     "eslint": "^9",
     "eslint-config-next": "15.5.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "tsx": "^4.21.0",
+    "typescript": "^5",
+    "zod": "^4.3.6"
   }
 }
